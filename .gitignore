@@ -1,0 +1,35 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# Large/duplicate (has its own git repo)
+emergent-learning-temp/
+
+# Large/optional
+emergent-learning/dashboard-app/TalkinHead/
+
+# Session logs (large, device-specific)
+*.jsonl
+**/tool-results/
+
+# Ephemeral/generated
+debug/
+.hooks-installed
+shell-snapshots/
+telemetry/
+stats-cache.json
+plans/
+todos/
+tasks/
+teams/
+backups/
+plugins/
+*.log
+
+# Sensitive (add here if any secrets exist)
+# .env
+# credentials.json

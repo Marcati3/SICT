@@ -1,0 +1,38 @@
+{
+    "hooks":  {
+                  "PreToolUse":  [
+                                     {
+                                         "hooks":  [
+                                                       {
+                                                           "command":  "\"C:\\Users\\intln\\.claude\\emergent-learning\\.venv\\Scripts\\python.exe\" \"C:\\Users\\intln\\.claude\\emergent-learning-temp\\src\\hooks\\learning-loop\\pre_tool_learning.py\"",
+                                                           "type":  "command"
+                                                       }
+                                                   ],
+                                         "matcher":  "Task"
+                                     }
+                                 ],
+                  "PostToolUse":  [
+                                      {
+                                          "hooks":  [
+                                                        {
+                                                            "command":  "\"C:\\Users\\intln\\.claude\\emergent-learning\\.venv\\Scripts\\python.exe\" \"C:\\Users\\intln\\.claude\\emergent-learning-temp\\src\\hooks\\learning-loop\\post_tool_learning.py\"",
+                                                            "type":  "command"
+                                                        }
+                                                    ],
+                                          "matcher":  "Task"
+                                      },
+                                      {
+                                          "hooks":  [
+                                                        {
+                                                            "command":  "\"C:\\Users\\intln\\.claude\\emergent-learning\\.venv\\Scripts\\python.exe\" \"C:\\Users\\intln\\.claude\\emergent-learning-temp\\src\\hooks\\learning-loop\\post_tool_learning.py\"",
+                                                            "type":  "command"
+                                                        }
+                                                    ],
+                                          "matcher":  "Read|Edit|Write|Glob|Grep"
+                                      }
+                                  ],
+                  "UserPromptSubmit":  [
+
+                                       ]
+              }
+}
