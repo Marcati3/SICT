@@ -27,6 +27,7 @@ Current project `.md` files:
 - **Personal-Finance:** CLAUDE.md, PROJECT-BRIEF.md
 - **Ratchada-Reapers:** CLAUDE.md, PROJECT-BRIEF.md
 - **SIC-Dashboards:** PROJECT.md
+- **US-Trip-May2026:** CLAUDE.md, PROJECT-BRIEF.md
 
 ## SIC-Dashboards Project Rules (from PROJECT.md)
 
