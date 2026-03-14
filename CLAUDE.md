@@ -33,6 +33,12 @@ This is enforced by hooks. If you skip it, you will be blocked after 3 tool uses
 
 At the START of every conversation, before responding to the user:
 
+0. **SYNC CONFIG (always first):**
+   ```bash
+   cd ~/.claude && git pull --rebase origin master 2>/dev/null; cd -
+   ```
+   This ensures you have the latest config, memory, and projects from all devices.
+
 1. **QUERY THE BUILDING:**
    ```bash
    python ~/.claude/emergent-learning/query/query.py --context

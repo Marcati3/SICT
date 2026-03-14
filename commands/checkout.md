@@ -107,10 +107,19 @@ Displays what was recorded:
    Notes saved: Yes
 ```
 
-### 8. Complete
+### 8. Sync Config to Cloud
+Push all changes (memory, heuristics, projects) to GitHub:
+```bash
+cd ~/.claude && git add -A && git commit -m "sync: session checkout $(date +%Y-%m-%d)" && git push origin master 2>/dev/null; cd -
+```
+```
+[OK] Config synced to GitHub
+```
+
+### 9. Complete
 Final confirmation:
 ```
-[OK] Checkout complete. Session learnings recorded!
+[OK] Checkout complete. Session learnings recorded and synced!
 ```
 
 ## Examples
