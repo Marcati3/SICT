@@ -28,7 +28,8 @@ Current project `.md` files:
 - **Ratchada-Reapers:** CLAUDE.md, PROJECT-BRIEF.md
 - **SIC-Dashboards:** PROJECT.md
 - **Thai-Holding-Company:** CLAUDE.md, PROJECT-BRIEF.md
-- **US-Trip-May2026:** CLAUDE.md, PROJECT-BRIEF.md
+- **Business-SICT/Ontario-Partnership:** Ontario Partnership docs (subproject)
+- **Business-SICT/US-Trip-May2026:** CLAUDE.md, PROJECT-BRIEF.md (subproject)
 
 ## SIC-Dashboards Project Rules (from PROJECT.md)
 
@@ -45,6 +46,13 @@ Current project `.md` files:
 - **Dashboard auto-start:** Always start the ELF dashboard automatically — never ask "Start Dashboard? [Y/n]". Just launch it silently.
 - **ELF query report:** After querying, ALWAYS report findings to user (golden rules, heuristics, pending decisions)
 - **Windows path fix:** `run-dashboard.sh` updated to detect `venv/Scripts/` (Windows) vs `venv/bin/` (Linux/macOS)
+
+## Sync Script Rules
+
+- `sync-projects.sh` syncs ALL files (not just .md) between `~/Claude/Projects/` and `~/.claude/projects/`
+- User works across desktop (Claude Code) and tablet (Claude cowork) — always sync and push ALL files
+- Ontario Partnership conversation lives in Claude desktop cowork app; outputs are synced to repo
+- Cowork session data stored at `AppData/Roaming/Claude/local-agent-mode-sessions/`
 
 ## ELF Infrastructure
 

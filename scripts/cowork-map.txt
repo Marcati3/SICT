@@ -1,0 +1,23 @@
+# Cowork Session → Project Folder Mapping
+# Format: session_title_substring | project/subfolder
+# Lines starting with # are comments. Matching is case-insensitive substring.
+# When a new cowork session is created, add a mapping line here.
+
+Ontario Partnership | Business-SICT/Ontario-Partnership
+India trip | Business-SICT/India-Trip
+Texas Instruments | Business-SICT/Competitive-Intel/Texas-Instruments
+EM competitive | Business-SICT/Competitive-Intel/EM-Micro
+EM Microelectronic | Business-SICT/Competitive-Intel/EM-Micro
+NXP competitive | Business-SICT/Competitive-Intel/NXP
+Fudan Competitive | Business-SICT/Competitive-Intel/Fudan
+ST Micro competitive | Business-SICT/Competitive-Intel/ST-Micro
+Sales agent agreement | Business-SICT/Sales/Agent-Agreement
+Korea reseller | Business-SICT/Sales/Korea-Reseller
+FY26 sales commission | Business-SICT/Sales/Commission-Plan-FY26
+Harmonize sales commission | Business-SICT/Sales/Commission-Plan-FY26
+sales commission plan | Business-SICT/Sales/Commission-Plan-FY26
+QMA agreement | Business-SICT/Sales/QMA-Agreement
+Boost marketing | Business-SICT/Marketing/Boost-Campaign
+Senior BDM | Business-SICT/HR/BDM-JD
+smart mini-bar | Business-SICT/Opportunities/Smart-Minibar
+Midoriya | Business-SICT/Sales/Midoriya-MOU
