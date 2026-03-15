@@ -12,9 +12,11 @@ emergent-learning-temp/
 # Large/optional
 emergent-learning/dashboard-app/TalkinHead/
 
-# Session logs (large, device-specific)
+# Session data (large, device-specific)
 *.jsonl
 **/tool-results/
+**/subagents/
+projects/*/[0-9a-f]*-[0-9a-f]*-[0-9a-f]*-[0-9a-f]*-[0-9a-f]*/
 
 # Ephemeral/generated
 debug/

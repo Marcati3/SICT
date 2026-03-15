@@ -107,7 +107,14 @@ Displays what was recorded:
    Notes saved: Yes
 ```
 
-### 8. Sync Config to Cloud
+### 8. Sync Project Briefs
+Copy project .md files (briefs, configs, copywriting rules) into the repo:
+```bash
+bash ~/.claude/scripts/sync-projects.sh
+```
+This only runs on devices that have local project folders (desktop). On phone/tablet it skips safely.
+
+### 9. Sync Config to Cloud
 Push all changes (memory, heuristics, projects) to GitHub:
 ```bash
 cd ~/.claude && git add -A && git commit -m "sync: session checkout $(date +%Y-%m-%d)" && git push origin master 2>/dev/null; cd -
