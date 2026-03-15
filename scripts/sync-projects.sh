@@ -1,11 +1,15 @@
 #!/bin/bash
 # =============================================================================
-# Full project sync across all Claude interfaces:
-#   1. Claude Cowork (desktop app) → Projects
-#   2. CLAUDE OUTPUTS → Projects
-#   3. Projects ↔ Repo (bidirectional)
+# Full project sync across all Claude interfaces.
+# Keeps two separate trees:
+#   PROJECTS  = briefs, configs, conversations (.md files, reference docs)
+#   OUTPUTS   = deliverables (docx, xlsx, pptx — versioned output files)
 #
-# Run this at session start and before push. Safe to run repeatedly.
+# Steps:
+#   1. Cowork session outputs → CLAUDE OUTPUTS (not Projects)
+#   2. Projects .md files ↔ Repo (bidirectional, for cross-device sync)
+#
+# Safe to run on any device. Skips gracefully if folders don't exist.
 # To add a new cowork session: edit cowork-map.txt with title → folder mapping.
 # =============================================================================
 
@@ -34,8 +38,8 @@ COWORK_DIRS=(
   "$HOME/AppData/Roaming/Claude/local-agent-mode-sessions/509e106c-81a5-4c36-a40a-f39b4b5183b8"
 )
 
-# ─── STEP 1: Cowork outputs → Projects ────────────────────────────────────────
-if [ -f "$SCRIPTS/cowork-map.txt" ]; then
+# ─── STEP 1: Cowork outputs → CLAUDE OUTPUTS ────────────────────────────────
+if [ -f "$SCRIPTS/cowork-map.txt" ] && [ -n "$OUTPUTS" ]; then
   synced=0
   for cowork_dir in "${COWORK_DIRS[@]}"; do
     [ -d "$cowork_dir" ] || continue
@@ -62,45 +66,52 @@ if [ -f "$SCRIPTS/cowork-map.txt" ]; then
       done < "$SCRIPTS/cowork-map.txt"
 
       if [ -n "$target" ]; then
-        dest="$LOCAL/$target"
+        dest="$OUTPUTS/$target"
         mkdir -p "$dest"
-        cp -r -u "$session_dir/outputs/"* "$dest/" 2>/dev/null
+        # Copy only deliverable files (docx, xlsx, pptx, pdf), not audit logs
+        for ext in docx xlsx pptx pdf; do
+          cp -u "$session_dir/outputs/"*.$ext "$dest/" 2>/dev/null
+        done
         synced=$((synced + 1))
       fi
     done
   done
-  echo "[1/3] Cowork: $synced sessions synced"
+  echo "[1/2] Cowork → CLAUDE OUTPUTS: $synced sessions synced"
 else
-  echo "[1/3] Cowork: skipped (no cowork-map.txt)"
+  echo "[1/2] Cowork: skipped (no cowork-map.txt or no OUTPUTS folder)"
 fi
 
-# ─── STEP 2: CLAUDE OUTPUTS → Projects ────────────────────────────────────────
-if [ -n "$OUTPUTS" ] && [ -d "$OUTPUTS" ]; then
-  for out_dir in "$OUTPUTS"/*/; do
-    [ -d "$out_dir" ] || continue
-    out_name=$(basename "$out_dir")
-    [ -d "$LOCAL/$out_name" ] && cp -r -u "$out_dir"* "$LOCAL/$out_name/" 2>/dev/null
-  done
-  echo "[2/3] CLAUDE OUTPUTS synced"
-else
-  echo "[2/3] CLAUDE OUTPUTS: skipped"
-fi
-
-# ─── STEP 3: Projects ↔ Repo (bidirectional) ──────────────────────────────────
+# ─── STEP 2: Projects .md files ↔ Repo (bidirectional) ──────────────────────
+# Local → Repo (desktop edits go to repo for pushing to phone/tablet)
 for project_dir in "$LOCAL"/*/; do
   [ -d "$project_dir" ] || continue
   project_name=$(basename "$project_dir")
   mkdir -p "$REPO/$project_name"
-  cp -r -u "$project_dir"* "$REPO/$project_name/" 2>/dev/null
+  for md_file in "$project_dir"*.md; do
+    [ -f "$md_file" ] || continue
+    fname=$(basename "$md_file")
+    repo_file="$REPO/$project_name/$fname"
+    if [ ! -f "$repo_file" ] || [ "$md_file" -nt "$repo_file" ]; then
+      cp "$md_file" "$repo_file"
+    fi
+  done
 done
 
+# Repo → Local (phone/tablet edits come back to desktop)
 for project_dir in "$REPO"/*/; do
   [ -d "$project_dir" ] || continue
   project_name=$(basename "$project_dir")
   [[ "$project_name" == C--* ]] && continue
   mkdir -p "$LOCAL/$project_name"
-  cp -r -u "$project_dir"* "$LOCAL/$project_name/" 2>/dev/null
+  for md_file in "$project_dir"*.md; do
+    [ -f "$md_file" ] || continue
+    fname=$(basename "$md_file")
+    local_file="$LOCAL/$project_name/$fname"
+    if [ ! -f "$local_file" ] || [ "$md_file" -nt "$local_file" ]; then
+      cp "$md_file" "$local_file"
+    fi
+  done
 done
 
-echo "[3/3] Projects ↔ Repo synced"
-echo "[OK] All synced (Cowork + Outputs + Projects + Repo)"
+echo "[2/2] Projects .md ↔ Repo synced"
+echo "[OK] All synced"

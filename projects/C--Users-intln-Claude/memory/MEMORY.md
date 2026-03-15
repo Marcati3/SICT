@@ -26,14 +26,14 @@ Current project `.md` files:
 - **LinkedIn-Writing:** CLAUDE.md, COPYWRITING.md, MARKETING GENIUS.md, PROJECT-BRIEF.md
 - **Personal-Finance:** CLAUDE.md, PROJECT-BRIEF.md
 - **Ratchada-Reapers:** CLAUDE.md, PROJECT-BRIEF.md
-- **SIC-Dashboards:** PROJECT.md
 - **Thai-Holding-Company:** CLAUDE.md, PROJECT-BRIEF.md
 - **Business-SICT/Ontario-Partnership:** Ontario Partnership docs (subproject)
 - **Business-SICT/US-Trip-May2026:** CLAUDE.md, PROJECT-BRIEF.md (subproject)
+- **Business-SICT/SIC-Dashboards:** PROJECT.md + sales/, cae/, marketing/, npd/, docs/ (subproject)
 
 ## SIC-Dashboards Project Rules (from PROJECT.md)
 
-- **Output directory:** `~/Claude/Projects/SIC-Dashboards/` — NEVER save outputs to Downloads
+- **Output directory:** `~/Claude/Projects/Business-SICT/SIC-Dashboards/` — NEVER save outputs to Downloads
 - **Subdirectory structure:** `sales/`, `cae/`, `marketing/`, `npd/`, `docs/`
 - **Source data drops:** go into `{dashboard}/data/`
 - **Design format:** Single-file HTML preferred (no server, no build step), Excel acceptable when requested
@@ -49,10 +49,12 @@ Current project `.md` files:
 
 ## Sync Script Rules
 
-- `sync-projects.sh` syncs ALL files (not just .md) between `~/Claude/Projects/` and `~/.claude/projects/`
-- User works across desktop (Claude Code) and tablet (Claude cowork) — always sync and push ALL files
-- Ontario Partnership conversation lives in Claude desktop cowork app; outputs are synced to repo
+- `sync-projects.sh` syncs ALL files from: Cowork (desktop app) → CLAUDE OUTPUTS → Projects ↔ Repo
+- User works desktop (Claude Code + Cowork) at night/weekends, tablet during the day — ALWAYS sync and push
+- When user says "sync", "push", or "repo": run sync script + git commit + git push. No need for `/checkout`
+- New cowork sessions: add mapping to `~/.claude/scripts/cowork-map.txt`
 - Cowork session data stored at `AppData/Roaming/Claude/local-agent-mode-sessions/`
+- At END of every session: auto-sync + push so tablet has latest
 
 ## ELF Infrastructure
 
