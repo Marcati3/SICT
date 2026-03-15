@@ -36,8 +36,9 @@ At the START of every conversation, before responding to the user:
 0. **SYNC CONFIG (always first):**
    ```bash
    cd ~/.claude && git pull --rebase origin master 2>/dev/null; cd -
+   bash ~/.claude/scripts/sync-projects.sh 2>/dev/null
    ```
-   This ensures you have the latest config, memory, and projects from all devices.
+   This pulls latest from GitHub, then syncs project briefs bidirectionally (repo ↔ local Projects folder). Phone/tablet edits flow back to desktop automatically.
 
 1. **QUERY THE BUILDING:**
    ```bash
