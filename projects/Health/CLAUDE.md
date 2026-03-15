@@ -13,7 +13,7 @@ Health — Personal medical and health management tracking. Pharmaceutical weigh
 
 ## Key Facts
 
-- **Profile:** 58-year-old male, 177 cm, 74 kg, BMI ~23.6, active (ice hockey 1-2x/week)
+- **Profile:** 59-year-old male (DOB: Feb 7, 1967), 177 cm, 74 kg, BMI ~23.6, active (ice hockey 1-2x/week)
 - **Current meds:** Mounjaro 2.5 mg weekly, HGH 2.0 IU daily, supplement stack
 - **CPAP:** ResMed AirFit N30i, APAP 6-15 cmH2O, EPR 3, humidity 3
 - **Diet:** Intermittent fasting 16:8, protein target ~130-135 g/day

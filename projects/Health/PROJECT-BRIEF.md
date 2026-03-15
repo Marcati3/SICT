@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project tracks the health management journey of a 58-year-old male (177 cm, 74 kg, BMI ~23.6) focused on two primary goals: **weight loss / body fat optimization** and **slowing the aging process**. The individual is active (plays ice hockey 1-2 times per week for 90 minutes), practices intermittent fasting (eating lunch and dinner only, 16:8 pattern), and is managing multiple medical interventions simultaneously.
+This project tracks the health management journey of a 59-year-old male (born February 7, 1967) (177 cm, 74 kg, BMI ~23.6) focused on two primary goals: **weight loss / body fat optimization** and **slowing the aging process**. The individual is active (plays ice hockey 1-2 times per week for 90 minutes), practices intermittent fasting (eating lunch and dinner only, 16:8 pattern), and is managing multiple medical interventions simultaneously.
 
 The conversation spans from July 2025 through February 2026 and covers pharmaceutical weight loss therapy, HGH optimization, sleep apnea management with CPAP/APAP, blood work monitoring, and side effect management.
 
@@ -80,7 +80,7 @@ The conversation spans from July 2025 through February 2026 and covers pharmaceu
 ## Important Details
 
 ### Patient Profile
-- **Age**: 58 years old
+- **Age**: 59 years old (born February 7, 1967)
 - **Height**: 177 cm
 - **Weight**: 74 kg
 - **BMI**: ~23.6
@@ -114,6 +114,7 @@ The conversation spans from July 2025 through February 2026 and covers pharmaceu
 | Start pressure | 6 cmH2O |
 | Ramp time | 5 minutes |
 | Mask | ResMed AirFit N30i (nasal cradle) |
+| Mask type | Pillow |
 | Hose | Slimline with top-of-head exhaust vents |
 
 ### CPAP Performance Metrics (Targets)
@@ -131,7 +132,7 @@ The conversation spans from July 2025 through February 2026 and covers pharmaceu
 #### September 19, 2025 (Most Recent Comprehensive Panel)
 | Test | Result | Reference | Notes |
 |------|--------|-----------|-------|
-| IGF-1 | 328 ng/mL | - | HIGH for age 58; baseline was 191; target 250-300 |
+| IGF-1 | 328 ng/mL | - | HIGH for age 59; baseline was 191; target 250-300 |
 | Fasting glucose | 85 mg/dL | - | Excellent |
 | HbA1c | 5.1% | - | Excellent glycemic control |
 | Fasting insulin | 8.3 uU/mL | - | Normal-high (ideal longevity: 3-7) |
@@ -323,3 +324,4 @@ No specific provider names were mentioned in the conversations. The following pr
 - If 95th percentile pressure >= 14.5: discuss raising max pressure with sleep physician
 - If SpO2 average drops below 92% or time < 90% > 15 min/night: trial EPR 2, consider higher minimum pressure
 - If leak > 24 L/min at 95th percentile consistently: troubleshoot mask fit before adjusting any other settings
+

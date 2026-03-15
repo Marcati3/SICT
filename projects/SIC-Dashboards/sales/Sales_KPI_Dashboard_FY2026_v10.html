@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sales KPI Dashboard — FY2026</title>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#f1f5f9;}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);border-bottom:2px solid #334155;
+  padding:18px 28px;display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;z-index:100;}
+.header-left h1{font-size:22px;font-weight:800;color:#f1f5f9;}
+.header-left .sub{font-size:11px;color:#cbd5e1;margin-top:3px;}
+.header-right{text-align:right;}
+.header-right .fy-target{font-size:18px;font-weight:700;color:#f1f5f9;}
+.header-right .meta{font-size:11px;color:#cbd5e1;margin-top:2px;}
+.stoplight-badge{display:inline-flex;gap:12px;margin-top:6px;background:#334155;
+  padding:5px 12px;border-radius:20px;font-size:11px;}
+
+/* MAIN SCROLL CONTAINER */
+.main{padding:20px 28px;max-width:1800px;margin:0 auto;}
+
+/* SECTION DIVIDERS */
+.section{margin-bottom:28px;}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  padding-bottom:8px;border-bottom:1px solid #334155;}
+.section-header h2{font-size:13px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.08em;color:#cbd5e1;}
+.section-number{background:#334155;color:#cbd5e1;font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:10px;}
+
+/* KPI SCORECARDS */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;}
+.kpi-card{background:#1e293b;border-radius:10px;padding:16px 14px;
+  border-top:4px solid #334155;position:relative;}
+.kpi-label{font-size:9px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.09em;color:#94a3b8;margin-bottom:5px;}
+.kpi-value{font-size:26px;font-weight:800;line-height:1.1;margin-bottom:3px;}
+.kpi-sub{font-size:11px;color:#cbd5e1;margin-bottom:7px;}
+.progress-wrap{background:#334155;border-radius:4px;height:5px;margin:5px 0;overflow:hidden;}
+.progress-bar{height:100%;border-radius:4px;}
+.kpi-status{font-size:11px;font-weight:700;margin-top:4px;}
+.kpi-note{font-size:10px;color:#cbd5e1;margin-top:6px;padding-top:5px;border-top:1px solid #334155;line-height:1.4;}
+
+
+
+/* COMMENTARY */
+.commentary{background:#1a2d40;border-left:3px solid #14b8a6;border-radius:8px;
+  padding:14px 18px;font-size:12px;line-height:1.75;color:#cbd5e1;}
+.commentary strong{color:#f1f5f9;}
+.commentary ul{margin:6px 0 0 18px;}
+.commentary li{margin-bottom:3px;}
+
+/* CHART GRID */
+.chart-row-1{display:grid;grid-template-columns:1fr;gap:16px;}
+.chart-row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.chart-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.chart-box{background:#1e293b;border-radius:10px;border:1px solid #334155;padding:6px;overflow:hidden;}
+
+/* PIPELINE KPI MINI ROW */
+.pipe-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+/* TABLES */
+.table-wrap{background:#1e293b;border-radius:10px;border:1px solid #334155;overflow:hidden;margin-top:12px;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:#0f172a;padding:9px 12px;text-align:left;font-size:9px;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.07em;color:#94a3b8;border-bottom:1px solid #334155;white-space:nowrap;}
+td{padding:9px 12px;border-bottom:1px solid #263347;color:#cbd5e1;vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#263347;}
+tfoot td{background:#0f172a;font-weight:700;border-top:1px solid #475569;}
+
+/* RISK/OPP TABLES side by side */
+.two-table-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+/* FOOTER */
+.footer{background:#1e293b;border-top:1px solid #334155;padding:14px 28px;
+  font-size:10px;color:#cbd5e1;display:flex;justify-content:space-between;margin-top:20px;}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div class="header">
+  <div class="header-left">
+    <h1>📊 Sales KPI Dashboard — FY2026</h1>
+    <div class="sub">Management / C-Suite View &nbsp;|&nbsp; Data as of Mar 13, 2026 &nbsp;|&nbsp; Currency: USD &nbsp;|&nbsp; All Salesperson Targets Annual</div>
+  </div>
+  <div class="header-right">
+    <div class="fy-target">Annual Target: $22.0M &nbsp;&nbsp; H1 Target: $11.3M</div>
+    <div class="meta">GP Target: 48% / $10.34M &nbsp;|&nbsp; Forecast Accuracy Target: 50% &nbsp;|&nbsp; Book-to-Bill: ≥1.0/mo</div>
+    <div class="stoplight-badge">
+      <span>🟢 ON TRACK ≥80%</span>
+      <span>🟡 AT RISK 50–79%</span>
+      <span>🔴 OFF TRACK &lt;50%</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══ SECTION 1: KPI SCORECARDS ═══ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2>Key Performance Indicators</h2>
+  </div>
+  <div class="kpi-row">
+
+    <div class="kpi-card" style="border-top-color:#22c55e;">
+      <div class="kpi-label">Revenue QTD (Q1 to Mar 13)</div>
+      <div class="kpi-value" style="color:#22c55e;">$4.69M</div>
+      <div class="kpi-sub">vs Q1 Target $5.72M (82.1%) | QTD+SO: $5.73M ✅</div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:82%;background:#22c55e;"></div></div>
+      <div class="kpi-status" style="color:#22c55e;">🟢 ON TRACK &nbsp; 82.1%</div>
+      <div class="kpi-note">Q1 QTD+SO = $5.73M — <strong style="color:#22c55e;">100.4% of Q1 target</strong><br>H1 progress: 41.5% | Jan $2.34M · Feb $1.41M · Mar $0.95M QTD</div>
+    </div>
+
+    <div class="kpi-card" style="border-top-color:#22c55e;">
+      <div class="kpi-label">FY FCST — 80% Confidence</div>
+      <div class="kpi-value" style="color:#22c55e;">$18.27M</div>
+      <div class="kpi-sub">vs Annual Budget $22.0M</div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:83%;background:#22c55e;"></div></div>
+      <div class="kpi-status" style="color:#22c55e;">🟢 ON TRACK &nbsp; 83.0%</div>
+      <div class="kpi-note">Gap to Budget: <strong style="color:#ef4444;">-$3.73M (-17.0%)</strong></div>
+    </div>
+
+    <div class="kpi-card" style="border-top-color:#f59e0b;">
+      <div class="kpi-label">Total Weighted FCST (incl. R&O)</div>
+      <div class="kpi-value" style="color:#f59e0b;">$19.03M</div>
+      <div class="kpi-sub">vs Annual Budget $22.0M</div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:87%;background:#f59e0b;"></div></div>
+      <div class="kpi-status" style="color:#f59e0b;">🟡 AT RISK &nbsp; 86.5%</div>
+      <div class="kpi-note">+$0.76M upside vs 80% FCST<br>Includes weighted opportunities ($1.65M)</div>
+    </div>
+
+    <div class="kpi-card" style="border-top-color:#22c55e;">
+      <div class="kpi-label">Gross Profit Margin (YTD)</div>
+      <div class="kpi-value" style="color:#22c55e;">40.8%</div>
+      <div class="kpi-sub">Target: 48% &nbsp;|&nbsp; GP$: $1525K (Jan+Feb)</div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:85%;background:#22c55e;"></div></div>
+      <div class="kpi-status" style="color:#22c55e;">🟢 ON PLAN &nbsp; Product mix timing per budget</div>
+      <div class="kpi-note">Jan 43.4% → Feb 36.7% driven by planned AFX shipments<br>Higher-margin ATL3X, NFC scheduled H2</div>
+    </div>
+
+    <div class="kpi-card" style="border-top-color:#22c55e;">
+      <div class="kpi-label">Forecast Accuracy (YTD)</div>
+      <div class="kpi-value" style="color:#22c55e;">98.1%</div>
+      <div class="kpi-sub">Actual $3.74M vs FCST $3.82M</div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:98%;background:#22c55e;"></div></div>
+      <div class="kpi-status" style="color:#22c55e;">🟢 ON TRACK &nbsp; Within ±5% of forecast</div>
+      <div class="kpi-note">Jan: 103% (CNY pull-in) · Feb: 90% (post-CNY dip)<br>Combined Jan+Feb on-plan — timing shift, not miss</div>
+    </div>
+
+    <div class="kpi-card" style="border-top-color:#f59e0b;">
+      <div class="kpi-label">Book-to-Bill (YTD)</div>
+      <div class="kpi-value" style="color:#f59e0b;">0.63x</div>
+      <div class="kpi-sub">Orders $2.34M vs Revenue $3.74M</div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:63%;background:#f59e0b;"></div></div>
+      <div class="kpi-status" style="color:#f59e0b;">🟡 WATCH &nbsp; Shipping 2025 backlog in Q1</div>
+      <div class="kpi-note">Jan 0.54x · Feb 0.76x (improving)<br>$1.04M open SO pending — Q1 QTD+SO still 100% of target</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SECTION 2: FORECAST COMPARISON ═══ -->
+
+<!-- ═══ QUARTERLY HORIZON BAND ═══ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2>Rolling Horizon View — Current Quarter · Next Quarter · Full Year</h2>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;">
+
+    <!-- Q1 2026 — CURRENT QUARTER -->
+    <div style="background:#1e293b;border-radius:12px;border:2px solid #22c55e;padding:20px;position:relative;">
+      <div style="position:absolute;top:12px;right:14px;background:#22c55e;color:#0f172a;font-size:9px;
+        font-weight:800;padding:3px 10px;border-radius:12px;text-transform:uppercase;letter-spacing:0.06em;">
+        Current Quarter
+      </div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
+        color:#22c55e;margin-bottom:10px;">Q1 2026 &nbsp;|&nbsp; Jan–Mar</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+        <div>
+          <div style="font-size:9px;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Budget</div>
+          <div style="font-size:18px;font-weight:800;color:#cbd5e1;">$5.72M</div>
+        </div>
+        <div>
+          <div style="font-size:9px;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">QTD + SO</div>
+          <div style="font-size:18px;font-weight:800;color:#22c55e;">$5.73M</div>
+        </div>
+        <div>
+          <div style="font-size:9px;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">QTD Actual</div>
+          <div style="font-size:18px;font-weight:800;color:#14b8a6;">$4.69M</div>
+        </div>
+        <div>
+          <div style="font-size:9px;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Open SO</div>
+          <div style="font-size:18px;font-weight:800;color:#3b82f6;">$1.04M</div>
+        </div>
+      </div>
+
+      <div style="background:#0f172a;border-radius:8px;padding:10px 12px;margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span style="font-size:10px;color:#cbd5e1;">QTD+SO vs Budget</span>
+          <span style="font-size:13px;font-weight:800;color:#22c55e;">100.4%</span>
+        </div>
+        <div style="background:#334155;border-radius:4px;height:6px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:#22c55e;border-radius:4px;"></div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:#22c55e;">🟢 ON TRACK — Q1 coverage 100.4%</div>
+      <div style="font-size:10px;color:#cbd5e1;margin-top:4px;">Gap: <strong style="color:#22c55e;">+$0.02M ahead</strong> of budget</div>
+      <div style="font-size:10px;color:#cbd5e1;margin-top:3px;">Q1 on-plan — Jan $2.34M · Feb $1.41M · Mar $0.95M QTD + $1.04M open SO</div>
+    </div>
+
+    <!-- Q2 2026 — NEXT QUARTER -->
+    <div style="background:#1e293b;border-radius:12px;border:2px solid #f59e0b;padding:20px;position:relative;">
+      <div style="position:absolute;top:12px;right:14px;background:#f59e0b;color:#0f172a;font-size:9px;
+        font-weight:800;padding:3px 10px;border-radius:12px;text-transform:uppercase;letter-spacing:0.06em;">
+        Next Quarter
+      </div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
+        color:#f59e0b;margin-bottom:10px;">Q2 2026 &nbsp;|&nbsp; Apr–Jun</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+        <div>
+          <div style="font-size:9px;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Budget</div>
+          <div style="font-size:18px;font-weight:800;color:#cbd5e1;">$5.55M</div>
+        </div>
+        <div>
+          <div style="font-size:9px;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">80% FCST</div>
+          <div style="font-size:18px;font-weight:800;color:#f59e0b;">$3.92M</div>
+        </div>
+        <div>
+          <div style="font-size:9px;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Open SO</div>
+          <div style="font-size:18px;font-weight:800;color:#3b82f6;">$4.23M</div>
+        </div>
+        <div>
+          <div style="font-size:9px;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Q2 Gap</div>
+          <div style="font-size:18px;font-weight:800;color:#ef4444;">-$1.32M</div>
+        </div>
+      </div>
+
+      <div style="background:#0f172a;border-radius:8px;padding:10px 12px;margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span style="font-size:10px;color:#cbd5e1;">80% FCST vs Budget</span>
+          <span style="font-size:13px;font-weight:800;color:#f59e0b;">70.7%</span>
+        </div>
+        <div style="background:#334155;border-radius:4px;height:6px;overflow:hidden;">
+          <div style="width:71%;height:100%;background:#f59e0b;border-radius:4px;"></div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:#f59e0b;">🟡 AT RISK — 76.3% SO coverage</div>
+      <div style="font-size:10px;color:#cbd5e1;margin-top:4px;">Q2 gap vs budget: <strong style="color:#ef4444;">-$1.32M</strong></div>
+      <div style="font-size:10px;color:#cbd5e1;margin-top:3px;">Key: STRATTEC, Lanhai, APKID TMV48, E-Garde, KKP Bank</div>
+    </div>
+
+    <!-- FULL YEAR -->
+    <div style="background:#1e293b;border-radius:12px;border:2px solid #22c55e;padding:20px;position:relative;">
+      <div style="position:absolute;top:12px;right:14px;background:#22c55e;color:#0f172a;font-size:9px;
+        font-weight:800;padding:3px 10px;border-radius:12px;text-transform:uppercase;letter-spacing:0.06em;">
+        Full Year
+      </div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
+        color:#22c55e;margin-bottom:10px;">FY2026 &nbsp;|&nbsp; Jan–Dec</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+        <div>
+          <div style="font-size:9px;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Budget</div>
+          <div style="font-size:18px;font-weight:800;color:#cbd5e1;">$22.00M</div>
+        </div>
+        <div>
+          <div style="font-size:9px;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">80% FCST</div>
+          <div style="font-size:18px;font-weight:800;color:#22c55e;">$18.27M</div>
+        </div>
+        <div>
+          <div style="font-size:9px;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Open SO (FY)</div>
+          <div style="font-size:18px;font-weight:800;color:#3b82f6;">$11.64M</div>
+        </div>
+        <div>
+          <div style="font-size:9px;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">FY Gap</div>
+          <div style="font-size:18px;font-weight:800;color:#ef4444;">-$3.73M</div>
+        </div>
+      </div>
+
+      <div style="background:#0f172a;border-radius:8px;padding:10px 12px;margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span style="font-size:10px;color:#cbd5e1;">80% FCST vs Budget</span>
+          <span style="font-size:13px;font-weight:800;color:#22c55e;">83.0%</span>
+        </div>
+        <div style="background:#334155;border-radius:4px;height:6px;overflow:hidden;">
+          <div style="width:83%;height:100%;background:#22c55e;border-radius:4px;"></div>
+        </div>
+      </div>
+
+      <!-- Q-by-Q mini breakdown -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;">
+        <div style="background:#0f172a;border-radius:6px;padding:7px 6px;text-align:center;">
+          <div style="font-size:8px;color:#cbd5e1;text-transform:uppercase;">Q1 SO</div>
+          <div style="font-size:11px;font-weight:700;color:#22c55e;">$1.05M</div>
+          <div style="font-size:8px;color:#cbd5e1;">Mar remaining</div>
+        </div>
+        <div style="background:#0f172a;border-radius:6px;padding:7px 6px;text-align:center;">
+          <div style="font-size:8px;color:#cbd5e1;text-transform:uppercase;">Q2 SO</div>
+          <div style="font-size:11px;font-weight:700;color:#3b82f6;">$4.23M</div>
+          <div style="font-size:8px;color:#22c55e;">76.3%</div>
+        </div>
+        <div style="background:#0f172a;border-radius:6px;padding:7px 6px;text-align:center;">
+          <div style="font-size:8px;color:#cbd5e1;text-transform:uppercase;">Q3 SO</div>
+          <div style="font-size:11px;font-weight:700;color:#3b82f6;">$2.96M</div>
+          <div style="font-size:8px;color:#f59e0b;">52.9%</div>
+        </div>
+        <div style="background:#0f172a;border-radius:6px;padding:7px 6px;text-align:center;">
+          <div style="font-size:8px;color:#cbd5e1;text-transform:uppercase;">Q4 SO</div>
+          <div style="font-size:11px;font-weight:700;color:#3b82f6;">$3.40M</div>
+          <div style="font-size:8px;color:#f59e0b;">77.8%</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Q2 Priority Actions callout -->
+  <div style="background:#1a2d1a;border:1px solid #22c55e;border-left:4px solid #22c55e;
+    border-radius:8px;padding:14px 18px;font-size:12px;color:#cbd5e1;line-height:1.75;">
+    <strong style="color:#22c55e;">🎯 Q2 Priority Actions to Close $1.32M Gap:</strong>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px;">
+      <div><strong style="color:#f1f5f9;">Shan / STRATTEC</strong><br>4-product ULTX/THV46 qualification — realistic $680K. Push for Q1→Q2 purchase plan commitment.</div>
+      <div><strong style="color:#f1f5f9;">Lisa / Lanhai + Tatwah</strong><br>RE31/RA10 new PO Q2 ($104K). SIC278 Lanhai close March ($56K). Tatwah sample cycle 1–2 months.</div>
+      <div><strong style="color:#f1f5f9;">Terry / Freevision + E-Garde</strong><br>FV SIC5777 ~50 wafers May–Jun ($294K). E-Garde Miwa reliability test → order trigger.</div>
+      <div><strong style="color:#f1f5f9;">Nuttapon / KKP Bank</strong><br>Fido card NFC project ($200K). IDEX reseller agreement must close Q1 to enable Q2 order.</div>
+      <div><strong style="color:#f1f5f9;">Tunn / APKID TMV48</strong><br>DAF truck OEM $39K — awaiting March feedback. HID SIC56NL/72A1 price negotiation ongoing.</div>
+      <div><strong style="color:#f1f5f9;">Intira / Caisley + Fasthink</strong><br>SIC279 460K pcs price confirmation needed. ULTX Wedge 10K Mar + 10K Apr expedite critical.</div>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2>Forecast vs Actual vs Budget</h2>
+  </div>
+  <div style="margin-top:14px;">
+    <div class="chart-box"><div>                            <div id="2b2fa83d-a0b6-4a03-9f5e-f7b422c79069" class="plotly-graph-div" style="height:360px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("2b2fa83d-a0b6-4a03-9f5e-f7b422c79069")) {                    Plotly.newPlot(                        "2b2fa83d-a0b6-4a03-9f5e-f7b422c79069",                        [{"marker":{"color":"#334155"},"name":"Budget","opacity":0.6,"x":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"y":[1855315,1794168,2057392,1903638,1591531,2033953,1931445,1650877,2005826,2097806,1448575,804766],"type":"bar"},{"line":{"color":"#14b8a6","width":3},"marker":{"color":"#14b8a6","size":9},"mode":"lines+markers","name":"Actual 2026","x":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"y":[2336020,1406761,945102,0,0,0,0,0,0,0,0,0],"type":"scatter"},{"line":{"color":"#94a3b8","dash":"dot","width":2},"mode":"lines","name":"Actual 2025","x":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"y":[1869844,2191489,1689869,2720506,1362817,1845407,1764544,1557650,1617069,1437768,847531,2038713],"type":"scatter"},{"marker":{"color":"#3b82f6"},"name":"Open SO","opacity":0.7,"x":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"y":[0,0,1045725,1512811,1258806,1462353,875162,1228932,857705,1629177,849415,916609],"type":"bar"},{"line":{"color":"#8b5cf6","dash":"longdash","width":1.5},"mode":"lines","name":"80% FCST (avg\u002fmo)","x":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"y":[1522566,1522566,1522566,1522566,1522566,1522566,1522566,1522566,1522566,1522566,1522566,1522566],"type":"scatter"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#f2f5fa"},"error_y":{"color":"#f2f5fa"},"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"baxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"line":{"color":"#283442"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"marker":{"line":{"color":"#283442"}},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#506784"},"line":{"color":"rgb(17,17,17)"}},"header":{"fill":{"color":"#2a3f5f"},"line":{"color":"rgb(17,17,17)"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#f2f5fa","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#f2f5fa"},"geo":{"bgcolor":"rgb(17,17,17)","lakecolor":"rgb(17,17,17)","landcolor":"rgb(17,17,17)","showlakes":true,"showland":true,"subunitcolor":"#506784"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"dark"},"paper_bgcolor":"rgb(17,17,17)","plot_bgcolor":"rgb(17,17,17)","polar":{"angularaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","radialaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"yaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"zaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"}},"shapedefaults":{"line":{"color":"#f2f5fa"}},"sliderdefaults":{"bgcolor":"#C8D4E3","bordercolor":"rgb(17,17,17)","borderwidth":1,"tickwidth":0},"ternary":{"aaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"baxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","caxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"title":{"x":0.05},"updatemenudefaults":{"bgcolor":"#506784","borderwidth":0},"xaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2}}},"title":{"font":{"color":"#f1f5f9","size":16},"text":"Monthly Revenue: Actual vs Budget vs Open SO\u003cbr\u003e\u003cspan style='font-size:12px;color:#cbd5e1;font-weight:normal;'\u003eJan\u2013Mar 2026 actuals | Open SO by scheduled shipment month | 80% FCST avg\u003c\u002fspan\u003e"},"legend":{"font":{"color":"#f1f5f9","size":11},"orientation":"h","yanchor":"bottom","y":1.08,"xanchor":"center","x":0.5},"margin":{"l":60,"r":20,"t":130,"b":50},"plot_bgcolor":"#1e293b","paper_bgcolor":"#0f172a","height":360,"xaxis":{"title":{"text":"Month"},"tickfont":{"color":"#f1f5f9"},"gridcolor":"#334155"},"yaxis":{"title":{"text":"Revenue (USD)"},"tickformat":"$,.0f","gridcolor":"#334155"}},                        {"responsive": true}                    )                };            </script>        </div></div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 3: SALES TEAM PERFORMANCE ═══ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <h2>Sales Team Performance</h2>
+  </div>
+  <div class="chart-box" style="margin-bottom:14px;"><div>                            <div id="682fc0d4-3cd1-4dd4-8e71-acd80451d2b4" class="plotly-graph-div" style="height:360px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("682fc0d4-3cd1-4dd4-8e71-acd80451d2b4")) {                    Plotly.newPlot(                        "682fc0d4-3cd1-4dd4-8e71-acd80451d2b4",                        [{"marker":{"color":"#334155"},"name":"Budget","opacity":0.85,"x":["Intira","Lisa","Nuttapon","Shan","Terry","Tunn"],"y":[10578896,1924653,128557,438365,3536363,4630859],"type":"bar"},{"marker":{"color":"#8b5cf6"},"name":"80% FCST","x":["Intira","Lisa","Nuttapon","Shan","Terry","Tunn"],"y":[8869491,1264422,115745,160593,3245398,4615140],"type":"bar"},{"marker":{"color":"#14b8a6"},"name":"YTD Actual","x":["Intira","Lisa","Nuttapon","Shan","Terry","Tunn"],"y":[2008044,346394,27839,19561,764252,1521793],"type":"bar"},{"marker":{"color":"#3b82f6"},"name":"Open SO","opacity":0.8,"x":["Intira","Lisa","Nuttapon","Shan","Terry","Tunn"],"y":[6557562,1147147,62943,140472,1882537,1840080],"type":"bar"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#f2f5fa"},"error_y":{"color":"#f2f5fa"},"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"baxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"line":{"color":"#283442"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"marker":{"line":{"color":"#283442"}},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#506784"},"line":{"color":"rgb(17,17,17)"}},"header":{"fill":{"color":"#2a3f5f"},"line":{"color":"rgb(17,17,17)"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#f2f5fa","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#f2f5fa"},"geo":{"bgcolor":"rgb(17,17,17)","lakecolor":"rgb(17,17,17)","landcolor":"rgb(17,17,17)","showlakes":true,"showland":true,"subunitcolor":"#506784"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"dark"},"paper_bgcolor":"rgb(17,17,17)","plot_bgcolor":"rgb(17,17,17)","polar":{"angularaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","radialaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"yaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"zaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"}},"shapedefaults":{"line":{"color":"#f2f5fa"}},"sliderdefaults":{"bgcolor":"#C8D4E3","bordercolor":"rgb(17,17,17)","borderwidth":1,"tickwidth":0},"ternary":{"aaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"baxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","caxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"title":{"x":0.05},"updatemenudefaults":{"bgcolor":"#506784","borderwidth":0},"xaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2}}},"title":{"font":{"color":"#f1f5f9","size":16},"text":"Revenue by Salesperson: Budget vs FCST vs Open SO vs Actual\u003cbr\u003e\u003cspan style='font-size:12px;color:#cbd5e1;font-weight:normal;'\u003eAnnual view | YTD = Jan\u2013Mar 13 QTD 2026\u003c\u002fspan\u003e"},"legend":{"font":{"color":"#f1f5f9","size":11},"orientation":"h","yanchor":"bottom","y":1.08,"xanchor":"center","x":0.5},"margin":{"l":60,"r":20,"t":130,"b":50},"barmode":"group","plot_bgcolor":"#1e293b","paper_bgcolor":"#0f172a","height":360,"xaxis":{"title":{"text":"Salesperson"},"gridcolor":"#334155"},"yaxis":{"title":{"text":"Revenue (USD)"},"tickformat":"$,.0f","gridcolor":"#334155"}},                        {"responsive": true}                    )                };            </script>        </div></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Salesperson</th><th>Annual Budget</th><th>FCST 80%</th>
+        <th>YTD Actual</th><th>Open SO</th><th>Budget Gap</th>
+        <th>Status</th><th>Key Actions</th>
+      </tr></thead>
+      <tbody><tr>
+      <td><strong style="color:#f1f5f9;">Intira</strong></td>
+      <td>$10.58M</td>
+      <td style="color:#22c55e;font-weight:700;">$8.87M<br><small>84%</small></td>
+      <td style="color:#14b8a6;">$2.01M</td>
+      <td style="color:#3b82f6;">$6.56M</td>
+      <td style="color:#ef4444;">-$1.71M</td>
+      <td><span style="color:#22c55e;font-size:10px;font-weight:700;">🟢 ON TRACK</span></td>
+      <td style="font-size:10px;color:#cbd5e1;">Caisley SIC279 460K pcs new PO (price TBD). Allflex 1.5M push-out risk maintained as budget. AEG SIC73F1 Q4 target.</td>
+    </tr><tr>
+      <td><strong style="color:#f1f5f9;">Lisa</strong></td>
+      <td>$1.92M</td>
+      <td style="color:#f59e0b;font-weight:700;">$1.26M<br><small>66%</small></td>
+      <td style="color:#14b8a6;">$0.35M</td>
+      <td style="color:#3b82f6;">$1.15M</td>
+      <td style="color:#ef4444;">-$660K</td>
+      <td><span style="color:#f59e0b;font-size:10px;font-weight:700;">🟡 AT RISK</span></td>
+      <td style="font-size:10px;color:#cbd5e1;">Closed Waferwon SIC73F1 50K pcs (done) + 150K pcs pending HID qualification.</td>
+    </tr><tr>
+      <td><strong style="color:#f1f5f9;">Nuttapon</strong></td>
+      <td>$0.13M</td>
+      <td style="color:#22c55e;font-weight:700;">$0.12M<br><small>90%</small></td>
+      <td style="color:#14b8a6;">$0.03M</td>
+      <td style="color:#3b82f6;">$0.06M</td>
+      <td style="color:#ef4444;">-$13K</td>
+      <td><span style="color:#22c55e;font-size:10px;font-weight:700;">🟢 ON TRACK</span></td>
+      <td style="font-size:10px;color:#cbd5e1;">Hitachi JP SIC73F1 frame order (24–36K units/$110K). Close SIC278 1M units by end March.</td>
+    </tr><tr>
+      <td><strong style="color:#f1f5f9;">Shan</strong></td>
+      <td>$0.44M</td>
+      <td style="color:#ef4444;font-weight:700;">$0.16M<br><small>37%</small></td>
+      <td style="color:#14b8a6;">$0.02M</td>
+      <td style="color:#3b82f6;">$0.14M</td>
+      <td style="color:#ef4444;">-$278K</td>
+      <td><span style="color:#ef4444;font-size:10px;font-weight:700;">🔴 OFF TRACK</span></td>
+      <td style="font-size:10px;color:#cbd5e1;">STRATTEC 4-product qualification at realistic 30–40% = $680K. TYMA Animal ID encoder.</td>
+    </tr><tr>
+      <td><strong style="color:#f1f5f9;">Terry</strong></td>
+      <td>$3.54M</td>
+      <td style="color:#22c55e;font-weight:700;">$3.25M<br><small>92%</small></td>
+      <td style="color:#14b8a6;">$0.76M</td>
+      <td style="color:#3b82f6;">$1.88M</td>
+      <td style="color:#ef4444;">-$291K</td>
+      <td><span style="color:#22c55e;font-size:10px;font-weight:700;">🟢 ON TRACK</span></td>
+      <td style="font-size:10px;color:#cbd5e1;">FV SIC5777 ~50 wafers May–Jun ($294K). Astag RE41 pre-prod lot imminent. Changjo RA10 PO received $159K.</td>
+    </tr><tr>
+      <td><strong style="color:#f1f5f9;">Tunn</strong></td>
+      <td>$4.63M</td>
+      <td style="color:#22c55e;font-weight:700;">$4.62M<br><small>100%</small></td>
+      <td style="color:#14b8a6;">$1.52M</td>
+      <td style="color:#3b82f6;">$1.84M</td>
+      <td style="color:#ef4444;">-$16K</td>
+      <td><span style="color:#22c55e;font-size:10px;font-weight:700;">🟢 ON TRACK</span></td>
+      <td style="font-size:10px;color:#cbd5e1;">APKID 1M pcs SIC279 PO received ($230K). Awaiting TMV48 feedback March.</td>
+    </tr><tr style="background:#0f172a;font-weight:700;">
+  <td>TOTAL</td>
+  <td>$22.00M</td>
+  <td style="color:#22c55e;font-weight:700;">$18.27M<br><small>83.0%</small></td>
+  <td style="color:#14b8a6;">$4.69M</td>
+  <td style="color:#3b82f6;">$11.64M</td>
+  <td style="color:#ef4444;">-$3.73M</td>
+  <td><span style="color:#22c55e;font-size:10px;">🟢 ON TRACK</span></td>
+  <td></td>
+</tr></tbody>
+      
+    </table>
+  </div>
+  <div style="margin-top:14px;" class="commentary">
+    <strong>Sales Team Commentary:</strong>
+    <ul>
+      <li><strong>Tunn</strong> is the standout performer — 80% FCST at $4.62M covers 99.7% of budget, driven by HID Global ($3.73M). Only rep tracking Green.</li>
+      <li><strong>Terry</strong> at 91.8% FCST-to-budget ($3.25M/$3.54M) — key action: close LF+AES E-Garde ($260K) and Changjo commitment in Q1.</li>
+      <li><strong>Intira</strong> holds 48% of total budget ($10.58M), FCST improved to $8.87M (83.8%) — Caisley 460K SIC279 PO and Allflex stability driving uptick. Allflex delays and AF+G2 ramp are primary risk drivers for entire team.</li>
+      <li><strong>Shan (36.6%), Lisa (65.7%), Nuttapon (90.1%)</strong> — Nuttapon upgraded to Amber after Hitachi frame order. STRATTEC (Shan, realistic $680K) are the single highest-value recovery opportunity this quarter.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══ SECTION 4: REVENUE BREAKDOWN ═══ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">05</span>
+    <h2>Revenue Breakdown — Region, Segment, Product & Customer</h2>
+  </div>
+  <div class="chart-row-2" style="margin-bottom:14px;">
+    <div class="chart-box"><div>                            <div id="baa79e6d-c6fb-404f-b927-ae12e2e6d7f4" class="plotly-graph-div" style="height:340px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("baa79e6d-c6fb-404f-b927-ae12e2e6d7f4")) {                    Plotly.newPlot(                        "baa79e6d-c6fb-404f-b927-ae12e2e6d7f4",                        [{"marker":{"color":"#94a3b8"},"name":"FY2025 Actual","opacity":0.5,"x":["EMEA","CHINA","ROA","US"],"y":[15024764,4644773,1130989,137524],"type":"bar"},{"marker":{"color":"#f59e0b"},"name":"FY2026 Budget","opacity":0.7,"x":["EMEA","CHINA","ROA","US"],"y":[14339537,4536555,1860836,438365],"type":"bar"},{"marker":{"color":"#8b5cf6"},"name":"FY2026 Rolling FCST","opacity":0.7,"x":["EMEA","CHINA","ROA","US"],"y":[14140409,4820883,1282023,160593],"type":"bar"},{"marker":{"color":"#14b8a6"},"name":"YTD 2026 Actual","x":["EMEA","CHINA","ROA","US"],"y":[3435282,1025782,206912,19561],"type":"bar"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#f2f5fa"},"error_y":{"color":"#f2f5fa"},"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"baxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"line":{"color":"#283442"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"marker":{"line":{"color":"#283442"}},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#506784"},"line":{"color":"rgb(17,17,17)"}},"header":{"fill":{"color":"#2a3f5f"},"line":{"color":"rgb(17,17,17)"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#f2f5fa","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#f2f5fa"},"geo":{"bgcolor":"rgb(17,17,17)","lakecolor":"rgb(17,17,17)","landcolor":"rgb(17,17,17)","showlakes":true,"showland":true,"subunitcolor":"#506784"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"dark"},"paper_bgcolor":"rgb(17,17,17)","plot_bgcolor":"rgb(17,17,17)","polar":{"angularaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","radialaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"yaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"zaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"}},"shapedefaults":{"line":{"color":"#f2f5fa"}},"sliderdefaults":{"bgcolor":"#C8D4E3","bordercolor":"rgb(17,17,17)","borderwidth":1,"tickwidth":0},"ternary":{"aaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"baxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","caxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"title":{"x":0.05},"updatemenudefaults":{"bgcolor":"#506784","borderwidth":0},"xaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2}}},"title":{"font":{"color":"#f1f5f9","size":16},"text":"Revenue by Region: Actuals vs Budget \u0026 Forecast\u003cbr\u003e\u003cspan style='font-size:12px;color:#cbd5e1;font-weight:normal;'\u003eFY2025 | FY2026 Budget | Rolling FCST | YTD Jan\u2013Mar Actual\u003c\u002fspan\u003e"},"legend":{"font":{"color":"#f1f5f9","size":11},"orientation":"h","yanchor":"bottom","y":1.15,"xanchor":"center","x":0.5},"margin":{"l":60,"r":20,"t":120,"b":50},"barmode":"group","plot_bgcolor":"#1e293b","paper_bgcolor":"#0f172a","height":340,"xaxis":{"title":{"text":"Region"},"gridcolor":"#334155"},"yaxis":{"title":{"text":"Revenue (USD)"},"tickformat":"$,.0f","gridcolor":"#334155"}},                        {"responsive": true}                    )                };            </script>        </div></div>
+    <div class="chart-box"><div>                            <div id="cad423fd-5a66-4fe8-ab77-c515d0d2104f" class="plotly-graph-div" style="height:340px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("cad423fd-5a66-4fe8-ab77-c515d0d2104f")) {                    Plotly.newPlot(                        "cad423fd-5a66-4fe8-ab77-c515d0d2104f",                        [{"hole":0.45,"labels":["Animal ID","Industrial","Immobilizer","Access Control","Innovative NFC"],"marker":{"line":{"color":"#0f172a","width":2}},"textposition":"outside","texttemplate":"%{label}\u003cbr\u003e%{percent}","values":[2623945,471868,314323,299354,32752],"type":"pie"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#f2f5fa"},"error_y":{"color":"#f2f5fa"},"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"baxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"line":{"color":"#283442"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"marker":{"line":{"color":"#283442"}},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#506784"},"line":{"color":"rgb(17,17,17)"}},"header":{"fill":{"color":"#2a3f5f"},"line":{"color":"rgb(17,17,17)"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#f2f5fa","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#f2f5fa"},"geo":{"bgcolor":"rgb(17,17,17)","lakecolor":"rgb(17,17,17)","landcolor":"rgb(17,17,17)","showlakes":true,"showland":true,"subunitcolor":"#506784"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"dark"},"paper_bgcolor":"rgb(17,17,17)","plot_bgcolor":"rgb(17,17,17)","polar":{"angularaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","radialaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"yaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"zaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"}},"shapedefaults":{"line":{"color":"#f2f5fa"}},"sliderdefaults":{"bgcolor":"#C8D4E3","bordercolor":"rgb(17,17,17)","borderwidth":1,"tickwidth":0},"ternary":{"aaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"baxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","caxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"title":{"x":0.05},"updatemenudefaults":{"bgcolor":"#506784","borderwidth":0},"xaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2}}},"title":{"font":{"color":"#f1f5f9","size":16},"text":"Revenue by Market Segment (YTD 2026)\u003cbr\u003e\u003cspan style='font-size:12px;color:#cbd5e1;font-weight:normal;'\u003eAnimal ID = 69% of YTD revenue\u003c\u002fspan\u003e"},"legend":{"font":{"color":"#f1f5f9","size":11},"orientation":"v","x":1.0},"margin":{"l":20,"r":140,"t":90,"b":20},"uniformtext":{"minsize":10,"mode":"hide"},"paper_bgcolor":"#0f172a","height":340},                        {"responsive": true}                    )                };            </script>        </div></div>
+  </div>
+  <div class="chart-row-2">
+    <div class="chart-box"><div>                            <div id="a077516d-8a82-40c5-beaa-16d76653592b" class="plotly-graph-div" style="height:340px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("a077516d-8a82-40c5-beaa-16d76653592b")) {                    Plotly.newPlot(                        "a077516d-8a82-40c5-beaa-16d76653592b",                        [{"marker":{"color":[2065737,491567,315945,246013,126574,109885,80195,64194,61046,31553],"colorscale":[[0,"#94a3b8"],[0.5,"#8b5cf6"],[1,"#14b8a6"]]},"orientation":"h","text":["$2066K","$492K","$316K","$246K","$127K","$110K","$80K","$64K","$61K","$32K"],"textposition":"outside","cliponaxis":false,"x":[2065737,491567,315945,246013,126574,109885,80195,64194,61046,31553],"y":["SIC279","AFX","SIC278","SIC5777X2","ULTX","SIC73F1","ATL3X","SIC7150","ATLF2SG2","SIC4340X2"],"type":"bar"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#f2f5fa"},"error_y":{"color":"#f2f5fa"},"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"baxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"line":{"color":"#283442"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"marker":{"line":{"color":"#283442"}},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#506784"},"line":{"color":"rgb(17,17,17)"}},"header":{"fill":{"color":"#2a3f5f"},"line":{"color":"rgb(17,17,17)"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#f2f5fa","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#f2f5fa"},"geo":{"bgcolor":"rgb(17,17,17)","lakecolor":"rgb(17,17,17)","landcolor":"rgb(17,17,17)","showlakes":true,"showland":true,"subunitcolor":"#506784"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"dark"},"paper_bgcolor":"rgb(17,17,17)","plot_bgcolor":"rgb(17,17,17)","polar":{"angularaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","radialaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"yaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"zaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"}},"shapedefaults":{"line":{"color":"#f2f5fa"}},"sliderdefaults":{"bgcolor":"#C8D4E3","bordercolor":"rgb(17,17,17)","borderwidth":1,"tickwidth":0},"ternary":{"aaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"baxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","caxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"title":{"x":0.05},"updatemenudefaults":{"bgcolor":"#506784","borderwidth":0},"xaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2}}},"title":{"font":{"color":"#f1f5f9","size":16},"text":"Top 10 Products by Revenue (YTD 2026)\u003cbr\u003e\u003cspan style='font-size:12px;color:#cbd5e1;font-weight:normal;'\u003eSIC279 leads at $2.07M\u003c\u002fspan\u003e"},"yaxis":{"autorange":"reversed","title":{"text":"Product"}},"margin":{"l":110,"r":130,"t":90,"b":50},"plot_bgcolor":"#1e293b","paper_bgcolor":"#0f172a","height":340,"xaxis":{"title":{"text":"Revenue (USD)"},"tickformat":"$,.0f","gridcolor":"#334155"}},                        {"responsive": true}                    )                };            </script>        </div></div>
+    <div class="chart-box"><div>                            <div id="4695bf54-6c9c-4871-811b-ab548c2ccc4e" class="plotly-graph-div" style="height:340px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("4695bf54-6c9c-4871-811b-ab548c2ccc4e")) {                    Plotly.newPlot(                        "4695bf54-6c9c-4871-811b-ab548c2ccc4e",                        [{"marker":{"color":[1485829,969064,249598,160042,108642,102168,95256,73216,60375,56592],"colorscale":[[0,"#94a3b8"],[0.5,"#3b82f6"],[1,"#14b8a6"]]},"orientation":"h","text":["$1486K","$969K","$250K","$160K","$109K","$102K","$95K","$73K","$60K","$57K"],"textposition":"outside","cliponaxis":false,"x":[1485829,969064,249598,160042,108642,102168,95256,73216,60375,56592],"y":["Allflex","HID Global","Freevision","FASTHINK","Queclink","Waferwon","LUX-IDent","Lanhai","Caisley","SMARTRAC"],"type":"bar"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#f2f5fa"},"error_y":{"color":"#f2f5fa"},"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"baxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"line":{"color":"#283442"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"marker":{"line":{"color":"#283442"}},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#506784"},"line":{"color":"rgb(17,17,17)"}},"header":{"fill":{"color":"#2a3f5f"},"line":{"color":"rgb(17,17,17)"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#f2f5fa","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#f2f5fa"},"geo":{"bgcolor":"rgb(17,17,17)","lakecolor":"rgb(17,17,17)","landcolor":"rgb(17,17,17)","showlakes":true,"showland":true,"subunitcolor":"#506784"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"dark"},"paper_bgcolor":"rgb(17,17,17)","plot_bgcolor":"rgb(17,17,17)","polar":{"angularaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","radialaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"yaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"zaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"}},"shapedefaults":{"line":{"color":"#f2f5fa"}},"sliderdefaults":{"bgcolor":"#C8D4E3","bordercolor":"rgb(17,17,17)","borderwidth":1,"tickwidth":0},"ternary":{"aaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"baxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","caxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"title":{"x":0.05},"updatemenudefaults":{"bgcolor":"#506784","borderwidth":0},"xaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2}}},"title":{"font":{"color":"#f1f5f9","size":16},"text":"Top 10 Customers by Revenue (YTD 2026)\u003cbr\u003e\u003cspan style='font-size:12px;color:#cbd5e1;font-weight:normal;'\u003eAllflex tops at $1.49M | Top 3 = 72%\u003c\u002fspan\u003e"},"yaxis":{"autorange":"reversed","title":{"text":"Customer"}},"margin":{"l":110,"r":130,"t":90,"b":50},"plot_bgcolor":"#1e293b","paper_bgcolor":"#0f172a","height":340,"xaxis":{"title":{"text":"Revenue (USD)"},"tickformat":"$,.0f","gridcolor":"#334155"}},                        {"responsive": true}                    )                };            </script>        </div></div>
+  </div>
+  <div style="margin-top:14px;" class="commentary">
+    <strong>Revenue Breakdown Commentary:</strong>
+    <ul>
+      <li><strong>EMEA dominates</strong> YTD 2026 at $3.44M (73%), consistent with FY2025 trend. China rebounded to $1.03M (22%). ROA ($207K) and US ($20K) small but expected — STRATTEC qualification is the US catalyst.</li>
+      <li><strong>Animal ID concentration:</strong> 70% of YTD revenue ($2.62M). Industrial ($472K) and Immobilizer ($314K) growing but diversification needed in H2.</li>
+      <li><strong>SIC279 product dependency:</strong> Top chip family by revenue. SIC278 rose to #3. Product and customer breakdowns reflect Jan–Feb YTD; March detail pending product-level analysis.</li>
+      <li><strong>Top 2 customers = Allflex + HID Global:</strong> Significant concentration — any delay from these 2 materially impacts monthly results.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══ SECTION 5: PIPELINE & 3X COVERAGE ═══ -->
+
+<!-- ═══ SECTION 05: GROSS PROFIT ANALYSIS ═══ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">06</span>
+    <h2>Gross Profit Analysis — Jan–Feb 2026 YTD Actuals (Finance ERP)</h2>
+  </div>
+
+  <!-- GP Summary band -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px;">
+    <div style="background:#1e293b;border-radius:10px;padding:16px;border:2px solid #22c55e;">
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8;margin-bottom:5px;">YTD GP Margin (Jan+Feb)</div>
+      <div style="font-size:30px;font-weight:800;color:#22c55e;">40.8%</div>
+      <div style="font-size:11px;color:#cbd5e1;">Target: 48.0% &nbsp;|&nbsp; Jan: 43.4% → Feb: 36.7%</div>
+      <div style="background:#334155;border-radius:4px;height:6px;margin:8px 0;overflow:hidden;">
+        <div style="width:85%;height:100%;background:#22c55e;border-radius:4px;"></div></div>
+      <div style="font-size:11px;color:#22c55e;font-weight:700;">🟢 ON PLAN — product mix timing per budget</div>
+    </div>
+    <div style="background:#1e293b;border-radius:10px;padding:16px;border:1px solid #334155;">
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8;margin-bottom:5px;">YTD Revenue (ERP)</div>
+      <div style="font-size:24px;font-weight:800;color:#f1f5f9;">$3.73M</div>
+      <div style="font-size:11px;color:#cbd5e1;">Jan $2.31M + Feb $1.42M</div>
+      <div style="font-size:10px;color:#cbd5e1;margin-top:6px;">Jan+Feb combined on-plan ($3.73M vs $3.67M budget); CNY pull-in shifted Jan↑ Feb↓</div>
+    </div>
+    <div style="background:#1e293b;border-radius:10px;padding:16px;border:1px solid #334155;">
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8;margin-bottom:5px;">YTD GP Dollars</div>
+      <div style="font-size:24px;font-weight:800;color:#22c55e;">$1,525K</div>
+      <div style="font-size:11px;color:#cbd5e1;">Jan: $1,001K (43.4%) &nbsp;|&nbsp; Feb: $522K (36.7%)</div>
+      <div style="font-size:10px;color:#cbd5e1;margin-top:6px;">FY GP target: $10.56M (48% × $22M)</div>
+    </div>
+    <div style="background:#1a1a2d;border-radius:10px;padding:16px;border:1px solid #334155;">
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8;margin-bottom:5px;">Product Mix Context</div>
+      <div style="font-size:11px;color:#f1f5f9;line-height:1.8;margin-top:4px;">
+        <span style="color:#f59e0b;">AFX: 14% GP</span> — budgeted in Feb (31% of Feb plan)<br>
+        <span style="color:#f59e0b;">SIC278: 14% GP</span> — planned Animal ID volume<br>
+        <span style="color:#f59e0b;">SIC7150: 8% GP</span> — needs pricing review<br>
+        <span style="color:#22c55e;">✅ ATL3X: 80%</span> &nbsp; <span style="color:#22c55e;">✅ NFC: 87%</span> — scheduled H2
+      </div>
+    </div>
+  </div>
+
+  <!-- Three-column detail tables -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+
+    <!-- By Salesperson -->
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#cbd5e1;margin-bottom:8px;">GP by Salesperson (YTD)</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Sales</th><th>Revenue</th><th>GP $</th><th>GP %</th><th>Notes</th></tr></thead>
+          <tbody><tr>
+      <td><strong style="color:#f1f5f9;">Intira</strong></td>
+      <td>$1854K</td>
+      <td>$622K</td>
+      <td style="color:#f59e0b;font-weight:700;">33.5%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:70%;height:100%;background:#f59e0b;"></div></div>
+      </td>
+      <td style="font-size:10px;color:#cbd5e1;">Jan 38.5% → Feb 25.4% (AFX-ADFN Feb shipment per budget); recovers as ATL3X ramps H2</td>
+    </tr><tr>
+      <td><strong style="color:#f1f5f9;">Tunn</strong></td>
+      <td>$1194K</td>
+      <td>$600K</td>
+      <td style="color:#22c55e;font-weight:700;">50.2%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:#22c55e;"></div></div>
+      </td>
+      <td style="font-size:10px;color:#cbd5e1;">Consistent Jan 49% → Feb 52%; HID SIC279 driving strong mix</td>
+    </tr><tr>
+      <td><strong style="color:#f1f5f9;">Terry</strong></td>
+      <td>$383K</td>
+      <td>$196K</td>
+      <td style="color:#22c55e;font-weight:700;">51.3%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:#22c55e;"></div></div>
+      </td>
+      <td style="font-size:10px;color:#cbd5e1;">Jan 52% → Feb 33% (low Feb volume $14K); YTD structurally healthy</td>
+    </tr><tr>
+      <td><strong style="color:#f1f5f9;">Lisa</strong></td>
+      <td>$269K</td>
+      <td>$85K</td>
+      <td style="color:#ef4444;font-weight:700;">31.5%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:66%;height:100%;background:#ef4444;"></div></div>
+      </td>
+      <td style="font-size:10px;color:#cbd5e1;">Jan 34% → Feb 27%; SIC278/7888 mix at low margin — NBO conversion needed</td>
+    </tr><tr>
+      <td><strong style="color:#f1f5f9;">Shan</strong></td>
+      <td>$20K</td>
+      <td>$15K</td>
+      <td style="color:#22c55e;font-weight:700;">76.8%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:#22c55e;"></div></div>
+      </td>
+      <td style="font-size:10px;color:#cbd5e1;">ULTX immobilizer at 77% — only $20K revenue so far</td>
+    </tr><tr>
+      <td><strong style="color:#f1f5f9;">Nuttapon</strong></td>
+      <td>$13K</td>
+      <td>$7K</td>
+      <td style="color:#22c55e;font-weight:700;">54.4%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:#22c55e;"></div></div>
+      </td>
+      <td style="font-size:10px;color:#cbd5e1;">Jan 71% strong; Feb -40% on one SIC7150 shipment ($2K)</td>
+    </tr></tbody>
+          <tfoot><tr>
+            <td><strong>TOTAL</strong></td>
+            <td>$3733K</td>
+            <td>$1525K</td>
+            <td style="color:#22c55e;font-weight:700;">40.8%</td>
+            <td></td>
+          </tr></tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- By Segment -->
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#cbd5e1;margin-bottom:8px;">GP by Market Segment (YTD)</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Segment</th><th>Revenue</th><th>GP %</th></tr></thead>
+          <tbody><tr>
+      <td>Animal ID</td>
+      <td>$1938K</td>
+      <td style="color:#ef4444;font-weight:700;">32.8%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:68%;height:100%;background:#ef4444;"></div></div>
+      </td>
+    </tr><tr>
+      <td>Animal ID / Industrial</td>
+      <td>$974K</td>
+      <td style="color:#22c55e;font-weight:700;">48.4%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:#22c55e;"></div></div>
+      </td>
+    </tr><tr>
+      <td>Immobilizer</td>
+      <td>$305K</td>
+      <td style="color:#22c55e;font-weight:700;">56.2%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:#22c55e;"></div></div>
+      </td>
+    </tr><tr>
+      <td>Access Control</td>
+      <td>$299K</td>
+      <td style="color:#f59e0b;font-weight:700;">42.2%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:88%;height:100%;background:#f59e0b;"></div></div>
+      </td>
+    </tr><tr>
+      <td>Industrial</td>
+      <td>$182K</td>
+      <td style="color:#22c55e;font-weight:700;">49.8%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:#22c55e;"></div></div>
+      </td>
+    </tr><tr>
+      <td>Innovative NFC</td>
+      <td>$33K</td>
+      <td style="color:#22c55e;font-weight:700;">87.5%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:#22c55e;"></div></div>
+      </td>
+    </tr></tbody>
+        </table>
+      </div>
+      <div style="margin-top:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#cbd5e1;margin-bottom:8px;">GP by Region (YTD)</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Region</th><th>Revenue</th><th>GP %</th></tr></thead>
+          <tbody>
+            <tr><td>EMEA</td><td>$2,954K</td><td style="color:#f59e0b;font-weight:700;">39.3%<div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;"><div style="width:82%;height:100%;background:#f59e0b;"></div></div></td></tr>
+            <tr><td>CHINA</td><td>$628K</td><td style="color:#f59e0b;font-weight:700;">42.8%<div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;"><div style="width:89%;height:100%;background:#f59e0b;"></div></div></td></tr>
+            <tr><td>ROA</td><td>$131K</td><td style="color:#22c55e;font-weight:700;">60.5%<div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;"><div style="width:100%;height:100%;background:#22c55e;"></div></div></td></tr>
+            <tr><td>US</td><td>$20K</td><td style="color:#22c55e;font-weight:700;">76.8%<div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;"><div style="width:100%;height:100%;background:#22c55e;"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- By Product -->
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#cbd5e1;margin-bottom:8px;">GP by Product — YTD Top 10</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Chip</th><th>Revenue</th><th>GP %</th></tr></thead>
+          <tbody><tr>
+      <td><strong>SIC279</strong></td>
+      <td>$2063K</td>
+      <td style="color:#22c55e;font-weight:700;">48.7%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:#22c55e;"></div></div>
+      </td>
+    </tr><tr>
+      <td><strong>AFX</strong></td>
+      <td>$493K</td>
+      <td style="color:#ef4444;font-weight:700;">14.3%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:30%;height:100%;background:#ef4444;"></div></div>
+      </td>
+    </tr><tr>
+      <td><strong>SIC278</strong></td>
+      <td>$315K</td>
+      <td style="color:#ef4444;font-weight:700;">14.4%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:30%;height:100%;background:#ef4444;"></div></div>
+      </td>
+    </tr><tr>
+      <td><strong>SIC5777X2</strong></td>
+      <td>$245K</td>
+      <td style="color:#f59e0b;font-weight:700;">47.4%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:98%;height:100%;background:#f59e0b;"></div></div>
+      </td>
+    </tr><tr>
+      <td><strong>ULTX</strong></td>
+      <td>$128K</td>
+      <td style="color:#22c55e;font-weight:700;">51.2%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:#22c55e;"></div></div>
+      </td>
+    </tr><tr>
+      <td><strong>SIC73F1</strong></td>
+      <td>$110K</td>
+      <td style="color:#f59e0b;font-weight:700;">40.0%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:83%;height:100%;background:#f59e0b;"></div></div>
+      </td>
+    </tr><tr>
+      <td><strong>ATL3X</strong> ↗</td>
+      <td>$81K</td>
+      <td style="color:#22c55e;font-weight:700;">79.5%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:#22c55e;"></div></div>
+      </td>
+    </tr><tr>
+      <td><strong>SIC7150-330pF</strong></td>
+      <td>$64K</td>
+      <td style="color:#ef4444;font-weight:700;">7.8%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:16%;height:100%;background:#ef4444;"></div></div>
+      </td>
+    </tr><tr>
+      <td><strong>ATLF2SG2</strong></td>
+      <td>$61K</td>
+      <td style="color:#f59e0b;font-weight:700;">39.3%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:82%;height:100%;background:#f59e0b;"></div></div>
+      </td>
+    </tr><tr>
+      <td><strong>THV46</strong></td>
+      <td>$34K</td>
+      <td style="color:#f59e0b;font-weight:700;">42.9%
+        <div style="background:#334155;border-radius:3px;height:4px;margin-top:3px;overflow:hidden;">
+          <div style="width:89%;height:100%;background:#f59e0b;"></div></div>
+      </td>
+    </tr></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GP Commentary -->
+  <div style="margin-top:14px;background:#0f1a12;border-left:3px solid #22c55e;border-radius:8px;
+    padding:14px 18px;font-size:12px;color:#cbd5e1;line-height:1.75;">
+    <strong style="color:#f1f5f9;">🟢 GP Commentary — Jan+Feb 2026 YTD (Trajectory vs Plan):</strong>
+    <ul style="margin:6px 0 0 18px;">
+      <li><strong>YTD blended GP at 40.8%</strong> — Jan 43.4% → Feb 36.7%. The Feb dip is product mix timing, not structural. The FY2026 budget explicitly planned AFX at 31% of Feb revenue ($562K budgeted, $434K actual). This shipment was expected.</li>
+      <li><strong>Jan+Feb combined revenue on-plan</strong> ($3.73M actual vs $3.67M budget). Jan ran +$440K over budget due to CNY pull-in of China orders; Feb was -$386K under as a result. Net: on track.</li>
+      <li><strong>Feb low-GP products at 45% of revenue vs 48% budgeted</strong> — actually slightly better than plan. AFX-ADFN (21% GP, 26% of Feb revenue) and SIC278 (16% GP, 8%) were the main drags, both per budget phasing.</li>
+      <li><strong>Intira (33.5% YTD)</strong> — carries 50% of company revenue and 100% of AFX/SIC278 volume. Feb drop to 25.4% was the planned AFX-ADFN shipment. Expected to recover as ATL3X (80% GP) ramps in H2.</li>
+      <li><strong>Tunn (50.2%), Terry (51.3%), Shan (76.8%)</strong> — all consistently at or above 48% target. Structural margin from HID, immobilizer, and access control products.</li>
+      <li><strong>SIC7150 at 7.8% GP remains a pricing watch item</strong> — needs review before Q2 Techna and HID orders are priced. Low volume ($64K YTD) limits impact on blended GP.</li>
+      <li><strong>H2 recovery path:</strong> ATL3X ($103K FY budget, 80% GP), SIC56NL ($279K), and SIC5777X2(G5) ($783K) are all back-loaded per budget. These higher-margin products will improve blended GP as they ramp.</li>
+    </ul>
+  </div>
+</div>
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">07</span>
+    <h2>Pipeline Development &amp; 3X Coverage</h2>
+  </div>
+  
+<!-- DYNAMIC 3X PIPELINE CALCULATOR -->
+<div id="pipe-update-bar" style="background:#0f172a;border:1px solid #334155;border-radius:10px;
+  padding:14px 20px;margin-bottom:14px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8;">
+    📅 Monthly Update — Adjust 80% FCST to recalculate 3X Pipeline Target
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <label style="font-size:12px;color:#cbd5e1;">FY Budget ($M):</label>
+    <input id="inp-budget" type="number" value="22.00" step="0.01"
+      style="width:90px;background:#1e293b;border:1px solid #475569;border-radius:6px;
+      color:#f1f5f9;padding:6px 10px;font-size:13px;font-weight:700;"
+      oninput="recalcPipeline()">
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <label style="font-size:12px;color:#cbd5e1;">80% FCST ($M):</label>
+    <input id="inp-fcst" type="number" value="18.27" step="0.01"
+      style="width:90px;background:#1e293b;border:1px solid #475569;border-radius:6px;
+      color:#f1f5f9;padding:6px 10px;font-size:13px;font-weight:700;"
+      oninput="recalcPipeline()">
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <label style="font-size:12px;color:#cbd5e1;">Pipeline Unwtd ($M):</label>
+    <input id="inp-pipe-unwtd" type="number" value="4.67" step="0.01"
+      style="width:90px;background:#1e293b;border:1px solid #475569;border-radius:6px;
+      color:#f1f5f9;padding:6px 10px;font-size:13px;font-weight:700;"
+      oninput="recalcPipeline()">
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <label style="font-size:12px;color:#cbd5e1;">Pipeline Wtd ($M):</label>
+    <input id="inp-pipe-wtd" type="number" value="1.65" step="0.01"
+      style="width:90px;background:#1e293b;border:1px solid #475569;border-radius:6px;
+      color:#f1f5f9;padding:6px 10px;font-size:13px;font-weight:700;"
+      oninput="recalcPipeline()">
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <label style="font-size:12px;color:#cbd5e1;">Risk Wtd ($M):</label>
+    <input id="inp-risk" type="number" value="0.89" step="0.01"
+      style="width:90px;background:#1e293b;border:1px solid #475569;border-radius:6px;
+      color:#f1f5f9;padding:6px 10px;font-size:13px;font-weight:700;"
+      oninput="recalcPipeline()">
+  </div>
+  <div id="pipe-as-of" style="font-size:11px;color:#cbd5e1;margin-left:auto;">
+    Last recalculated: Mar 11, 2026
+  </div>
+</div>
+
+<!-- DYNAMIC PIPELINE KPI CARDS -->
+<div class="pipe-kpi-row" style="margin-bottom:14px;">
+  <div class="kpi-card" id="card-3x-req" style="border-top-color:#cbd5e1;">
+    <div class="kpi-label">3X Pipeline Required</div>
+    <div class="kpi-value" id="val-3x-req" style="color:#cbd5e1;">$11.19M</div>
+    <div class="kpi-sub" id="sub-3x-req">3 × FY gap of $3.73M</div>
+    <div class="kpi-status" style="color:#cbd5e1;">Must decline QoQ as opps convert</div>
+    <div class="kpi-note" id="note-3x-trend">↓ Target shrinks as FCST closes gap to budget</div>
+  </div>
+  <div class="kpi-card" id="card-pipe-unwtd" style="border-top-color:#3b82f6;">
+    <div class="kpi-label">Pipeline Unweighted</div>
+    <div class="kpi-value" id="val-pipe-unwtd" style="color:#3b82f6;">$4.67M</div>
+    <div class="kpi-sub" id="sub-pipe-unwtd">41.7% of 3X target</div>
+    <div class="progress-wrap"><div class="progress-bar" id="bar-pipe-unwtd" style="width:42%;background:#3b82f6;"></div></div>
+    <div class="kpi-status" id="status-pipe-unwtd" style="color:#ef4444;">🔴 OFF TRACK</div>
+  </div>
+  <div class="kpi-card" id="card-pipe-wtd" style="border-top-color:#ef4444;">
+    <div class="kpi-label">Pipeline Weighted</div>
+    <div class="kpi-value" id="val-pipe-wtd" style="color:#ef4444;">$1.65M</div>
+    <div class="kpi-sub" id="sub-pipe-wtd">14.8% of 3X target</div>
+    <div class="progress-wrap"><div class="progress-bar" id="bar-pipe-wtd" style="width:15%;background:#ef4444;"></div></div>
+    <div class="kpi-status" id="status-pipe-wtd" style="color:#ef4444;">🔴 OFF TRACK</div>
+  </div>
+  <div class="kpi-card" id="card-risk" style="border-top-color:#f59e0b;">
+    <div class="kpi-label">Weighted Risk Exposure</div>
+    <div class="kpi-value" id="val-risk" style="color:#f59e0b;">-$887K</div>
+    <div class="kpi-sub" id="sub-risk">Net opp after risk: +$764K</div>
+    <div class="kpi-status" style="color:#f59e0b;">🟡 MONITOR CLOSELY</div>
+  </div>
+</div>
+
+<script>
+function ragColor(pct) {
+  if (pct >= 0.80) return '#22c55e';
+  if (pct >= 0.50) return '#f59e0b';
+  return '#ef4444';
+}
+function ragLabel(pct) {
+  if (pct >= 0.80) return '🟢 ON TRACK';
+  if (pct >= 0.50) return '🟡 AT RISK';
+  return '🔴 OFF TRACK';
+}
+function fmtM(v) {
+  if (Math.abs(v) >= 1) return '$' + v.toFixed(2) + 'M';
+  return '$' + (v * 1000).toFixed(0) + 'K';
+}
+
+function recalcPipeline() {
+  const budget   = parseFloat(document.getElementById('inp-budget').value) || 22.00;
+  const fcst     = parseFloat(document.getElementById('inp-fcst').value)   || 18.27;
+  const pUnwtd   = parseFloat(document.getElementById('inp-pipe-unwtd').value) || 4.67;
+  const pWtd     = parseFloat(document.getElementById('inp-pipe-wtd').value)   || 1.65;
+  const risk     = parseFloat(document.getElementById('inp-risk').value)    || 0.89;
+
+  const gap      = Math.max(budget - fcst, 0);
+  const target3x = gap * 3;
+  const netOpp   = pWtd - risk;
+
+  // 3X Required card
+  document.getElementById('val-3x-req').textContent  = fmtM(target3x);
+  document.getElementById('sub-3x-req').textContent  = '3 × FY gap of ' + fmtM(gap);
+  const gapPct = gap / budget;
+  const reqColor = gapPct > 0.20 ? '#ef4444' : gapPct > 0.10 ? '#f59e0b' : '#22c55e';
+  document.getElementById('val-3x-req').style.color = reqColor;
+  document.getElementById('card-3x-req').style.borderTopColor = reqColor;
+  document.getElementById('note-3x-trend').textContent =
+    gap <= 0 ? '✅ Gap closed — no pipeline coverage needed!' :
+    '↓ Target shrinks as FCST closes gap to $' + budget.toFixed(2) + 'M budget';
+
+  // Unweighted pipeline card
+  const unwtdPct = target3x > 0 ? pUnwtd / target3x : 1;
+  const unwtdColor = ragColor(unwtdPct);
+  document.getElementById('val-pipe-unwtd').textContent  = fmtM(pUnwtd);
+  document.getElementById('val-pipe-unwtd').style.color  = unwtdColor;
+  document.getElementById('card-pipe-unwtd').style.borderTopColor = unwtdColor;
+  document.getElementById('sub-pipe-unwtd').textContent  = (unwtdPct*100).toFixed(1) + '% of 3X target';
+  document.getElementById('bar-pipe-unwtd').style.width  = Math.min(unwtdPct*100, 100).toFixed(0) + '%';
+  document.getElementById('bar-pipe-unwtd').style.background = unwtdColor;
+  document.getElementById('status-pipe-unwtd').textContent  = ragLabel(unwtdPct);
+  document.getElementById('status-pipe-unwtd').style.color  = unwtdColor;
+
+  // Weighted pipeline card
+  const wtdPct = target3x > 0 ? pWtd / target3x : 1;
+  const wtdColor = ragColor(wtdPct);
+  document.getElementById('val-pipe-wtd').textContent  = fmtM(pWtd);
+  document.getElementById('val-pipe-wtd').style.color  = wtdColor;
+  document.getElementById('card-pipe-wtd').style.borderTopColor = wtdColor;
+  document.getElementById('sub-pipe-wtd').textContent  = (wtdPct*100).toFixed(1) + '% of 3X target';
+  document.getElementById('bar-pipe-wtd').style.width  = Math.min(wtdPct*100, 100).toFixed(0) + '%';
+  document.getElementById('bar-pipe-wtd').style.background = wtdColor;
+  document.getElementById('status-pipe-wtd').textContent  = ragLabel(wtdPct);
+  document.getElementById('status-pipe-wtd').style.color  = wtdColor;
+
+  // Risk card
+  const netSign = netOpp >= 0 ? '+' : '';
+  document.getElementById('val-risk').textContent  = '-' + fmtM(risk);
+  document.getElementById('sub-risk').textContent  = 'Net opp after risk: ' + netSign + fmtM(netOpp);
+
+  // Update timestamp
+  const now = new Date();
+  document.getElementById('pipe-as-of').textContent =
+    'Last recalculated: ' + now.toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+}
+</script>
+
+  <div class="chart-row-1" style="margin-bottom:14px;">
+    <div class="chart-box"><div>                            <div id="bc5797c8-ccd2-4412-bf16-a7d59c20adcf" class="plotly-graph-div" style="height:340px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("bc5797c8-ccd2-4412-bf16-a7d59c20adcf")) {                    Plotly.newPlot(                        "bc5797c8-ccd2-4412-bf16-a7d59c20adcf",                        [{"marker":{"color":["#94a3b8","#8b5cf6","#ef4444","#f59e0b","#3b82f6","#22c55e"]},"text":["$22.00M","$18.27M","$3.73M","$11.19M","$4.67M","$1.65M"],"textposition":"outside","x":["FY Budget","80% FCST","FCST Gap","3X Target","Unwtd Pipeline","Wtd Pipeline"],"y":[22000000,18270789,3729211,11187633,4671412,1650908],"type":"bar"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#f2f5fa"},"error_y":{"color":"#f2f5fa"},"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"baxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"line":{"color":"#283442"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"marker":{"line":{"color":"#283442"}},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#506784"},"line":{"color":"rgb(17,17,17)"}},"header":{"fill":{"color":"#2a3f5f"},"line":{"color":"rgb(17,17,17)"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#f2f5fa","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#f2f5fa"},"geo":{"bgcolor":"rgb(17,17,17)","lakecolor":"rgb(17,17,17)","landcolor":"rgb(17,17,17)","showlakes":true,"showland":true,"subunitcolor":"#506784"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"dark"},"paper_bgcolor":"rgb(17,17,17)","plot_bgcolor":"rgb(17,17,17)","polar":{"angularaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","radialaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"yaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"zaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"}},"shapedefaults":{"line":{"color":"#f2f5fa"}},"sliderdefaults":{"bgcolor":"#C8D4E3","bordercolor":"rgb(17,17,17)","borderwidth":1,"tickwidth":0},"ternary":{"aaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"baxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","caxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"title":{"x":0.05},"updatemenudefaults":{"bgcolor":"#506784","borderwidth":0},"xaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2}}},"shapes":[{"line":{"color":"#f59e0b","dash":"dash","width":2},"type":"line","x0":0,"x1":1,"xref":"x domain","y0":11187633,"y1":11187633,"yref":"y"}],"annotations":[{"font":{"color":"#f59e0b","size":11},"showarrow":false,"text":"3X Target $11.19M","x":1,"xanchor":"right","xref":"x domain","y":11716617,"yanchor":"bottom","yref":"y"}],"title":{"font":{"color":"#f1f5f9","size":16},"text":"Pipeline 3X Coverage Analysis (FY2026)\u003cbr\u003e\u003cspan style='font-size:12px;color:#cbd5e1;font-weight:normal;'\u003eWtd pipeline covers 14.8% of 3X target — critical gap\u003c\u002fspan\u003e"},"margin":{"l":60,"r":30,"t":120,"b":50},"plot_bgcolor":"#1e293b","paper_bgcolor":"#0f172a","height":340,"xaxis":{"title":{"text":"Category"},"tickfont":{"color":"#f1f5f9","size":11}},"yaxis":{"title":{"text":"USD"},"tickformat":"$,.0f","gridcolor":"#334155"}},                        {"responsive": true}                    )                };            </script>        </div></div>
+  </div>
+  <div class="two-table-grid">
+    <div>
+      <div class="section-header" style="margin-bottom:8px;"><h2 style="color:#ef4444;">⚠️ Key Risks &amp; Issues</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Sales</th><th>Customer</th><th>Issue</th><th>Level</th><th>Impact</th><th>Action</th></tr></thead>
+          <tbody><tr><td>Intira</td><td>Allflex</td><td style="font-size:11px;">AF+G1 CSP delivery delay</td>
+      <td><span style="color:#ef4444;font-weight:700;">High</span></td>
+      <td style="color:#ef4444;">$132.8K</td>
+      <td style="font-size:10px;color:#cbd5e1;">Expedite SC/supplier</td></tr><tr><td>Lisa</td><td>Waferwon</td><td style="font-size:11px;">HID capacity insufficient — fully loaded Q3</td>
+      <td><span style="color:#ef4444;font-weight:700;">High</span></td>
+      <td style="color:#ef4444;">$600.0K</td>
+      <td style="font-size:10px;color:#cbd5e1;">HID capacity critical path</td></tr><tr><td>Terry</td><td>SES</td><td style="font-size:11px;">Tariff impact — difficult to receive orders</td>
+      <td><span style="color:#ef4444;font-weight:700;">High</span></td>
+      <td style="color:#ef4444;">$278.9K</td>
+      <td style="font-size:10px;color:#cbd5e1;">Escalate to management</td></tr><tr><td>Terry</td><td>Changjo</td><td style="font-size:11px;">RA10 — only 200K pcs commitment vs 507K</td>
+      <td><span style="color:#ef4444;font-weight:700;">High</span></td>
+      <td style="color:#ef4444;">$40.5K</td>
+      <td style="font-size:10px;color:#cbd5e1;">Commercial discussion done</td></tr><tr><td>Nuttapon</td><td>Techna</td><td style="font-size:11px;">SIC7150 lead time 7 months</td>
+      <td><span style="color:#f59e0b;font-weight:700;">Medium</span></td>
+      <td style="color:#ef4444;">$58.0K</td>
+      <td style="font-size:10px;color:#cbd5e1;">SC to shuffle production</td></tr><tr><td>Terry</td><td>Astag</td><td style="font-size:11px;">RE41 pre-production feature delay</td>
+      <td><span style="color:#f59e0b;font-weight:700;">Medium</span></td>
+      <td style="color:#ef4444;">$39.0K</td>
+      <td style="font-size:10px;color:#cbd5e1;">CAE support needed</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="section-header" style="margin-bottom:8px;"><h2 style="color:#22c55e;">🚀 Key Opportunities</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Sales</th><th>Customer</th><th>Opportunity</th><th>Conf.</th><th>Value</th><th>Timeline</th><th>Action</th></tr></thead>
+          <tbody><tr><td>Shan</td><td>STRATTEC</td><td style="font-size:11px;">ULTX 4-product qualification</td>
+      <td><span style="color:#f59e0b;font-weight:700;">Medium</span></td>
+      <td style="color:#22c55e;">$1,354.9K</td>
+      <td style="color:#14b8a6;">Q1 2026</td>
+      <td style="font-size:10px;color:#cbd5e1;">Awaiting qualification outcomes</td></tr><tr><td>Lisa</td><td>Tatwah</td><td style="font-size:11px;">SIC379/278 US transition project</td>
+      <td><span style="color:#cbd5e1;font-weight:700;">Low</span></td>
+      <td style="color:#22c55e;">$630.0K</td>
+      <td style="color:#14b8a6;">Q4 2026</td>
+      <td style="font-size:10px;color:#cbd5e1;">CAE: new sample 30K pcs; Lisa: 1mo approval + field trial; PLM: RFS gate</td></tr><tr><td>Tunn</td><td>HID</td><td style="font-size:11px;">SIC56NL new project</td>
+      <td><span style="color:#cbd5e1;font-weight:700;">Low</span></td>
+      <td style="color:#22c55e;">$367.6K</td>
+      <td style="color:#14b8a6;">Q4 2026</td>
+      <td style="font-size:10px;color:#cbd5e1;">HID placed 1H with competitor; provide test on HID form factor</td></tr><tr><td>Nuttapon</td><td>KKP Bank</td><td style="font-size:11px;">Fido card NFC project</td>
+      <td><span style="color:#22c55e;font-weight:700;">High</span></td>
+      <td style="color:#22c55e;">$200.0K</td>
+      <td style="color:#14b8a6;">Q2 2026</td>
+      <td style="font-size:10px;color:#cbd5e1;">Review price structure &amp; reseller agreement with IDEX</td></tr><tr><td>Lisa</td><td>Lanhai</td><td style="font-size:11px;">RE31/RA10 new PO Q2</td>
+      <td><span style="color:#f59e0b;font-weight:700;">Medium</span></td>
+      <td style="color:#22c55e;">$104.4K</td>
+      <td style="color:#14b8a6;">Q2 2026</td>
+      <td style="font-size:10px;color:#cbd5e1;">Sample production Mar; 3-6mo field trial &amp; MP schedule</td></tr><tr><td>Intira</td><td>Silca</td><td style="font-size:11px;">ATLF2SG2 OEM replacement</td>
+      <td><span style="color:#cbd5e1;font-weight:700;">Low</span></td>
+      <td style="color:#22c55e;">$100.0K</td>
+      <td style="color:#14b8a6;">Q3 2026</td>
+      <td style="font-size:10px;color:#cbd5e1;">Verify OEM certificate req; 12mo qualification; stock on hand</td></tr><tr><td>Terry</td><td>E-Garde</td><td style="font-size:11px;">LF+AES access control project</td>
+      <td><span style="color:#f59e0b;font-weight:700;">Medium</span></td>
+      <td style="color:#22c55e;">$340.0K</td>
+      <td style="color:#14b8a6;">Q1 2026</td>
+      <td style="font-size:10px;color:#cbd5e1;">Follow up Miwa feedback; Terry/Parada</td></tr><tr><td>Tunn</td><td>Omnia</td><td style="font-size:11px;">SIC279 close PO 2026</td>
+      <td><span style="color:#22c55e;font-weight:700;">High</span></td>
+      <td style="color:#22c55e;">$80.0K</td>
+      <td style="color:#14b8a6;">Q3 2026</td>
+      <td style="font-size:10px;color:#cbd5e1;">8mo lead time; cannot meet H1</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:14px;" class="commentary">
+    <strong>Pipeline Commentary:</strong>
+    <ul>
+      <li><strong>Pipeline development is the #1 critical action for FY2026.</strong> Weighted coverage of $1.65M against a $11.19M 3X target (14.8%) means the team must urgently qualify new opportunities — particularly Shan (STRATTEC $680K realistic) and Terry (E-Garde $340K + FV SIC5777 $294K) as most actionable near-term closes.</li>
+      <li><strong>Open SO backlog of $11.69M</strong> is the strongest revenue signal. Intira holds $6.55M (56%), primarily Allflex and FASTHINK — confirming that any Allflex delivery delay directly impacts monthly revenue.</li>
+      <li><strong>Risk-weighted exposure totals -$799K</strong> with Waferwon/HID capacity ($420K weighted) and SES tariff impact ($195K weighted) as the two highest-priority items for management escalation.</li>
+      <li><strong>Pipeline should decline QoQ</strong> as opportunities convert to booked revenue. Q2 review should show unweighted pipeline growing above $11.72M, otherwise the FY gap widens further.</li>
+    </ul>
+  </div>
+</div>
+
+</div><!-- end .main -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>Sales KPI Dashboard FY2026 &nbsp;|&nbsp; Sources: March Sales Dashboard, Q1 Revenue by Region, Revenue/SO/Rolling FCST/Budget workbook &nbsp;|&nbsp; Salesperson targets from 80% confidence FCST file</span>
+  <span>Generated: March 13, 2026 (v10) &nbsp;|&nbsp; GP Margin = Jan 2026 actuals from Finance ERP · Feb GP pending · Forecast Accuracy · Book-to-Bill = awaiting data</span>
+</div>
+</body>
+</html>
