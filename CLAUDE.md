@@ -4,6 +4,16 @@
 # This configures Claude Code to use the Emergent Learning Framework
 #
 
+## Auto-Sync (Cross-Device)
+
+This repo syncs automatically across Desktop (nights/weekends) and Tablet (weekdays/office):
+
+- **SessionStart hook**: `git pull origin master --ff-only` — pulls latest on open
+- **Stop hook**: `git add -A && commit && push` — pushes changes on close
+- **Configured in**: `.claude/settings.json`
+
+No manual sync needed. Just open Claude on any device and start working.
+
 ## FIRST ACTION - BEFORE ANYTHING ELSE
 
 **Query the building. Now. Before reading further.**
