@@ -1,73 +1,35 @@
-# Memory - Operational Rules
+# Memory Index
 
-## MANDATORY SESSION STARTUP SEQUENCE (DO NOT SKIP)
+## Project Docs Rule
 
-Every conversation must execute these steps IN ORDER before any work:
+Before starting ANY task in a project, read ALL `.md` files in that project's root directory — not just CLAUDE.md. These contain briefs, style guides, copywriting rules, and domain context. Subprojects (nested folders with their own PROJECT-BRIEF.md) get the same treatment.
 
-1. **Query the building** — `python ~/.claude/emergent-learning/query/query.py --context`
-2. **Report query results** — Show user relevant golden rules, heuristics, pending CEO decisions, active experiments
-3. **Auto-start ELF dashboard** — Launch silently (never ask). Use: `bash ~/.claude/emergent-learning/dashboard-app/run-dashboard.sh 2>/dev/null &`
-4. **Identify the project** — If task relates to a project under `~/Claude/Projects/`, read ALL `.md` files in that project root
-5. **Apply project rules** — Output paths, design conventions, RAG logic, etc. come from project docs
+## Output Path Rules
 
-**This sequence has been violated 3 sessions in a row. It is non-negotiable.**
+- **Business-SICT:** Outputs go into **department subfolders** (IT/, Marketing/, HR/, Sales/, Competitive-Intel/, Opportunities/), never the project root. Match output to the responsible team. Create a descriptive subfolder for the workstream (e.g., `IT/SEO-Audit/`). Every new output folder gets a `PROJECT-BRIEF.md`.
+- **SIC-Dashboards:** Outputs go into `~/Claude/Projects/Business-SICT/SIC-Dashboards/{department}/` — never Downloads. Rules are in that folder's `PROJECT.md`.
+- **All projects:** Never save outputs to Downloads. Always use the project directory.
 
-## Project Startup Protocol
-
-**Before starting ANY task in a project, read ALL `.md` files in that project's root directory — not just CLAUDE.md.**
-
-These files contain briefs, style guides, copywriting rules, and domain context that must inform all work. This applies to every project under `~/Claude/Projects/`.
-
-Current project `.md` files:
-- **Business-SICT:** CLAUDE.md, COPYWRITING.md, MARKETING GENIUS.md, PROJECT-BRIEF.md
-- **FFHA:** CLAUDE.md, PROJECT-BRIEF.md
-- **Health:** CLAUDE.md, PROJECT-BRIEF.md
-- **Italy-Travel:** CLAUDE.md, PROJECT-BRIEF.md
-- **LinkedIn-Writing:** CLAUDE.md, COPYWRITING.md, MARKETING GENIUS.md, PROJECT-BRIEF.md
-- **Personal-Finance:** CLAUDE.md, PROJECT-BRIEF.md
-- **Ratchada-Reapers:** CLAUDE.md, PROJECT-BRIEF.md
-- **Thai-Holding-Company:** CLAUDE.md, PROJECT-BRIEF.md
-- **Business-SICT/Ontario-Partnership:** Ontario Partnership docs (subproject)
-- **Business-SICT/US-Trip-May2026:** CLAUDE.md, PROJECT-BRIEF.md (subproject)
-- **Business-SICT/SIC-Dashboards:** PROJECT.md + sales/, cae/, marketing/, npd/, docs/ (subproject)
-
-## SIC-Dashboards Project Rules (from PROJECT.md)
-
-- **Output directory:** `~/Claude/Projects/Business-SICT/SIC-Dashboards/` — NEVER save outputs to Downloads
-- **Subdirectory structure:** `sales/`, `cae/`, `marketing/`, `npd/`, `docs/`
-- **Source data drops:** go into `{dashboard}/data/`
-- **Design format:** Single-file HTML preferred (no server, no build step), Excel acceptable when requested
-- **RAG Logic:** Trajectory vs Plan — Green=on track at this point in year, Amber=behind but recoverable, Red=structurally off-plan
-- **No Orphan Reds:** Every amber/red KPI must answer: What's off, Why, Action (owner + timeframe)
-- **Design principles:** Lean (no clutter), visually obvious (readable in 5 seconds), consistent design system
-
-## ELF Preferences
-
-- **Dashboard auto-start:** Always start the ELF dashboard automatically — never ask "Start Dashboard? [Y/n]". Just launch it silently.
-- **ELF query report:** After querying, ALWAYS report findings to user (golden rules, heuristics, pending decisions)
-- **Windows path fix:** `run-dashboard.sh` updated to detect `venv/Scripts/` (Windows) vs `venv/bin/` (Linux/macOS)
-
-## Sync Script Rules
+## Sync Rules
 
 - `sync-projects.sh` syncs ALL files from: Cowork (desktop app) → CLAUDE OUTPUTS → Projects ↔ Repo
-- User works desktop (Claude Code + Cowork) at night/weekends, tablet during the day — ALWAYS sync and push
-- When user says "sync", "push", or "repo": run sync script + git commit + git push. No need for `/checkout`
+- User works desktop (Claude Code + Cowork) at night/weekends, tablet during the day
+- When user says "sync", "push", or "repo": run sync script + git commit + git push
 - New cowork sessions: add mapping to `~/.claude/scripts/cowork-map.txt`
-- Cowork session data stored at `AppData/Roaming/Claude/local-agent-mode-sessions/`
+- Cowork session data: `AppData/Roaming/Claude/local-agent-mode-sessions/`
 - At END of every session: auto-sync + push so tablet has latest
 
-## ELF Infrastructure
+## Context Management
 
-- ELF query module has no requirements.txt. If deps are missing, install manually:
-  `python -m pip install peewee-aio aiofiles aiosqlite scipy pyyaml`
-- `record-failure.sh` requires `sqlite3` CLI (not on PATH). Use `record-heuristic.py` instead.
+- **Warn before compaction:** When a conversation is getting long and approaching context limits, proactively warn the user: "We're approaching the context limit. Want to wrap up here and continue in a new session?" Let them decide rather than being surprised.
 
-## Repeated Violation Log
+## ELF Infrastructure Notes
 
-| Date | Violation | Times | Status |
-|------|-----------|-------|--------|
-| 2026-03-12 | Output saved to Downloads instead of project dir | 3 sessions | FIXED — path corrected, rule documented |
-| 2026-03-12 | Project .md files not read before starting work | 3 sessions | FIXED — startup sequence enforced |
-| 2026-03-12 | ELF dashboard prompt shown instead of auto-start | 2 sessions | FIXED — preference documented |
-| 2026-03-12 | ELF query results not reported to user | 2 sessions | FIXED — report step added to sequence |
-| 2026-03-12 | RAG logic and No Orphan Reds not applied | 1 session | FIXED — PROJECT.md rules cached here |
+- ELF query module has no requirements.txt. If deps missing: `python -m pip install peewee-aio aiofiles aiosqlite scipy pyyaml`
+- Use `record-heuristic.py` (Python) instead of `.sh` versions — `sqlite3` CLI is not on PATH on Windows
+- `run-dashboard.sh` detects `venv/Scripts/` (Windows) vs `venv/bin/` (Linux/macOS) automatically
+
+## Feedback Memories
+
+- [SICT Output Folder Convention](feedback_sict_folder_convention.md) — Department subfolder rule details
+- [Warn Before Context Compaction](feedback_context_compaction_warning.md) — Exact warning phrasing
