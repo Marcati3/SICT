@@ -104,6 +104,35 @@ while IFS= read -r -d '' md_file; do
   fi
 done < <(find "$REPO" -name "*.md" -print0 2>/dev/null)
 
+# ─── STEP 2.5: Fix misplaced output folders in repo ──────────────────────────
+# Cowork/Claude app sometimes creates folders at outputs/ root instead of the
+# correct Business-SICT/... path. Use cowork-map.txt to detect and fix.
+REPO_OUTPUTS="$HOME/.claude/outputs"
+if [ -f "$SCRIPTS/cowork-map.txt" ] && [ -d "$REPO_OUTPUTS" ]; then
+  while IFS='|' read -r pattern folder; do
+    [[ "$pattern" =~ ^[[:space:]]*# ]] && continue
+    [ -z "$pattern" ] && continue
+    folder=$(echo "$folder" | xargs)
+    # Extract the last segment as potential misplaced folder name
+    leaf=$(basename "$folder")
+    misplaced="$REPO_OUTPUTS/$leaf"
+    correct="$REPO_OUTPUTS/$folder"
+    if [ -d "$misplaced" ] && [ "$misplaced" != "$correct" ]; then
+      mkdir -p "$correct"
+      for f in "$misplaced"/*; do
+        [ -f "$f" ] || continue
+        fname=$(basename "$f")
+        if [ ! -f "$correct/$fname" ]; then
+          mv "$f" "$correct/"
+          echo "  [fix] Moved $leaf/$fname → $folder/"
+        fi
+      done
+      # Remove if empty
+      rmdir "$misplaced" 2>/dev/null
+    fi
+  done < "$SCRIPTS/cowork-map.txt"
+fi
+
 # ─── STEP 3: Output files ↔ Repo (bidirectional, all deliverable types) ─────
 REPO_OUTPUTS="$HOME/.claude/outputs"
 mkdir -p "$REPO_OUTPUTS"
