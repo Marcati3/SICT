@@ -14,6 +14,17 @@ This repo syncs automatically across Desktop (nights/weekends) and Tablet (weekd
 
 No manual sync needed. Just open Claude on any device and start working.
 
+## Git Branching Rule (MANDATORY)
+
+**ALWAYS commit and push directly to `master`. NEVER create feature branches.**
+
+This repo is a personal config/project sync — not a software project. All devices must stay on `master` to keep syncing working.
+
+- `git pull origin master` on start
+- `git push origin master` on checkout
+- If you're on a different branch: `git checkout master && git merge <branch>` first
+- **Only exception:** if the user explicitly asks to create a new branch for a new project
+
 ## FIRST ACTION - BEFORE ANYTHING ELSE
 
 **Query the building. Now. Before reading further.**
