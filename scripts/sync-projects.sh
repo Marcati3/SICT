@@ -81,37 +81,28 @@ else
   echo "[1/2] Cowork: skipped (no cowork-map.txt or no OUTPUTS folder)"
 fi
 
-# ─── STEP 2: Projects .md files ↔ Repo (bidirectional) ──────────────────────
+# ─── STEP 2: Projects .md files ↔ Repo (bidirectional, recursive) ───────────
 # Local → Repo (desktop edits go to repo for pushing to phone/tablet)
-for project_dir in "$LOCAL"/*/; do
-  [ -d "$project_dir" ] || continue
-  project_name=$(basename "$project_dir")
-  mkdir -p "$REPO/$project_name"
-  for md_file in "$project_dir"*.md; do
-    [ -f "$md_file" ] || continue
-    fname=$(basename "$md_file")
-    repo_file="$REPO/$project_name/$fname"
-    if [ ! -f "$repo_file" ] || [ "$md_file" -nt "$repo_file" ]; then
-      cp "$md_file" "$repo_file"
-    fi
-  done
-done
+while IFS= read -r -d '' md_file; do
+  rel_path="${md_file#$LOCAL/}"
+  repo_file="$REPO/$rel_path"
+  mkdir -p "$(dirname "$repo_file")"
+  if [ ! -f "$repo_file" ] || [ "$md_file" -nt "$repo_file" ]; then
+    cp "$md_file" "$repo_file"
+  fi
+done < <(find "$LOCAL" -name "*.md" -print0 2>/dev/null)
 
 # Repo → Local (phone/tablet edits come back to desktop)
-for project_dir in "$REPO"/*/; do
-  [ -d "$project_dir" ] || continue
-  project_name=$(basename "$project_dir")
-  [[ "$project_name" == C--* ]] && continue
-  mkdir -p "$LOCAL/$project_name"
-  for md_file in "$project_dir"*.md; do
-    [ -f "$md_file" ] || continue
-    fname=$(basename "$md_file")
-    local_file="$LOCAL/$project_name/$fname"
-    if [ ! -f "$local_file" ] || [ "$md_file" -nt "$local_file" ]; then
-      cp "$md_file" "$local_file"
-    fi
-  done
-done
+while IFS= read -r -d '' md_file; do
+  rel_path="${md_file#$REPO/}"
+  # Skip Claude Code internal project dirs
+  [[ "$rel_path" == C--* ]] && continue
+  local_file="$LOCAL/$rel_path"
+  mkdir -p "$(dirname "$local_file")"
+  if [ ! -f "$local_file" ] || [ "$md_file" -nt "$local_file" ]; then
+    cp "$md_file" "$local_file"
+  fi
+done < <(find "$REPO" -name "*.md" -print0 2>/dev/null)
 
 echo "[2/2] Projects .md ↔ Repo synced"
 echo "[OK] All synced"
