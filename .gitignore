@@ -35,3 +35,4 @@ plugins/
 # Sensitive (add here if any secrets exist)
 # .env
 # credentials.json
+projects/C--Users-intln-Claude/*.jsonl
