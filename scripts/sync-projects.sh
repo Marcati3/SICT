@@ -104,5 +104,35 @@ while IFS= read -r -d '' md_file; do
   fi
 done < <(find "$REPO" -name "*.md" -print0 2>/dev/null)
 
+# ─── STEP 3: Output files ↔ Repo (bidirectional, all deliverable types) ─────
+REPO_OUTPUTS="$HOME/.claude/outputs"
+mkdir -p "$REPO_OUTPUTS"
+
+if [ -n "$OUTPUTS" ]; then
+  # Local → Repo (desktop outputs go to repo)
+  while IFS= read -r -d '' out_file; do
+    rel_path="${out_file#$OUTPUTS/}"
+    repo_file="$REPO_OUTPUTS/$rel_path"
+    mkdir -p "$(dirname "$repo_file")"
+    if [ ! -f "$repo_file" ] || [ "$out_file" -nt "$repo_file" ]; then
+      cp "$out_file" "$repo_file"
+    fi
+  done < <(find "$OUTPUTS" \( -name "*.docx" -o -name "*.xlsx" -o -name "*.pptx" -o -name "*.pdf" \) -print0 2>/dev/null)
+
+  # Repo → Local (phone/tablet outputs come back to desktop)
+  while IFS= read -r -d '' out_file; do
+    rel_path="${out_file#$REPO_OUTPUTS/}"
+    local_file="$OUTPUTS/$rel_path"
+    mkdir -p "$(dirname "$local_file")"
+    if [ ! -f "$local_file" ] || [ "$out_file" -nt "$local_file" ]; then
+      cp "$out_file" "$local_file"
+    fi
+  done < <(find "$REPO_OUTPUTS" \( -name "*.docx" -o -name "*.xlsx" -o -name "*.pptx" -o -name "*.pdf" \) -print0 2>/dev/null)
+
+  echo "[3/3] Outputs ↔ Repo synced"
+else
+  echo "[3/3] Outputs: skipped (no local OUTPUTS folder)"
+fi
+
 echo "[2/2] Projects .md ↔ Repo synced"
 echo "[OK] All synced"
