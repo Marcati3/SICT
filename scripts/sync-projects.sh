@@ -82,7 +82,18 @@ else
 fi
 
 # ─── STEP 2: Projects files ↔ Repo (bidirectional, recursive) ────────────────
-# Syncs: .md (briefs/configs), .html (dashboards), .json (data configs)
+# Syncs ALL project-relevant file types across all projects (not just SICT):
+#   Documents:  .md .html .txt .csv .json
+#   Microsoft:  .docx .xlsx .pptx .doc .xls .ppt
+#   PDF:        .pdf
+#   Graphics:   .png .jpg .jpeg .gif .svg .webp .ico .bmp
+#   Social:     .mp4 .mov .mp3 .wav
+SYNC_EXTENSIONS="-name *.md -o -name *.html -o -name *.txt -o -name *.csv -o -name *.json \
+  -o -name *.docx -o -name *.xlsx -o -name *.pptx -o -name *.doc -o -name *.xls -o -name *.ppt \
+  -o -name *.pdf \
+  -o -name *.png -o -name *.jpg -o -name *.jpeg -o -name *.gif -o -name *.svg -o -name *.webp -o -name *.ico -o -name *.bmp \
+  -o -name *.mp4 -o -name *.mov -o -name *.mp3 -o -name *.wav"
+
 # Local → Repo (desktop edits go to repo for pushing to phone/tablet)
 while IFS= read -r -d '' src_file; do
   rel_path="${src_file#$LOCAL/}"
@@ -91,7 +102,7 @@ while IFS= read -r -d '' src_file; do
   if [ ! -f "$repo_file" ] || [ "$src_file" -nt "$repo_file" ]; then
     cp "$src_file" "$repo_file"
   fi
-done < <(find "$LOCAL" \( -name "*.md" -o -name "*.html" \) -not -path "*/node_modules/*" -print0 2>/dev/null)
+done < <(eval "find \"$LOCAL\" \( $SYNC_EXTENSIONS \) -not -path '*/node_modules/*' -not -path '*/data/*' -print0" 2>/dev/null)
 
 # Repo → Local (phone/tablet edits come back to desktop)
 while IFS= read -r -d '' src_file; do
@@ -103,7 +114,7 @@ while IFS= read -r -d '' src_file; do
   if [ ! -f "$local_file" ] || [ "$src_file" -nt "$local_file" ]; then
     cp "$src_file" "$local_file"
   fi
-done < <(find "$REPO" \( -name "*.md" -o -name "*.html" \) -not -path "*/node_modules/*" -print0 2>/dev/null)
+done < <(eval "find \"$REPO\" \( $SYNC_EXTENSIONS \) -not -path '*/node_modules/*' -not -path '*/data/*' -print0" 2>/dev/null)
 
 # ─── STEP 2.5: Fix misplaced output folders in repo ──────────────────────────
 # Cowork/Claude app sometimes creates folders at outputs/ root instead of the
@@ -147,7 +158,7 @@ if [ -n "$OUTPUTS" ]; then
     if [ ! -f "$repo_file" ] || [ "$out_file" -nt "$repo_file" ]; then
       cp "$out_file" "$repo_file"
     fi
-  done < <(find "$OUTPUTS" \( -name "*.docx" -o -name "*.xlsx" -o -name "*.pptx" -o -name "*.pdf" \) -print0 2>/dev/null)
+  done < <(eval "find \"$OUTPUTS\" \( $SYNC_EXTENSIONS \) -not -path '*/node_modules/*' -print0" 2>/dev/null)
 
   # Repo → Local (phone/tablet outputs come back to desktop)
   while IFS= read -r -d '' out_file; do
@@ -157,7 +168,7 @@ if [ -n "$OUTPUTS" ]; then
     if [ ! -f "$local_file" ] || [ "$out_file" -nt "$local_file" ]; then
       cp "$out_file" "$local_file"
     fi
-  done < <(find "$REPO_OUTPUTS" \( -name "*.docx" -o -name "*.xlsx" -o -name "*.pptx" -o -name "*.pdf" \) -print0 2>/dev/null)
+  done < <(eval "find \"$REPO_OUTPUTS\" \( $SYNC_EXTENSIONS \) -not -path '*/node_modules/*' -print0" 2>/dev/null)
 
   echo "[3/3] Outputs ↔ Repo synced"
 else
