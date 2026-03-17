@@ -2,16 +2,22 @@
   "hooks": {
     "SessionStart": [
       {
-        "type": "command",
-        "command": "cd /home/user/SICT && git pull origin master --ff-only 2>/dev/null; echo 'SICT repo synced'",
-        "description": "Auto-pull latest changes on session start"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh"
+          }
+        ]
       }
     ],
     "Stop": [
       {
-        "type": "command",
-        "command": "cd /home/user/SICT && git add -A && git diff --cached --quiet || (git commit -m \"sync: auto-commit $(date +%Y-%m-%d-%H%M)\" && git push origin master 2>/dev/null); echo 'SICT repo pushed'",
-        "description": "Auto-commit and push changes on session end"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /home/user/SICT && git add -A && git diff --cached --quiet || (git commit -m \"sync: auto-commit $(date +%Y-%m-%d-%H%M)\" && git push origin master 2>/dev/null); echo 'SICT repo pushed'"
+          }
+        ]
       }
     ]
   }
