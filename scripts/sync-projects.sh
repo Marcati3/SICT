@@ -81,28 +81,29 @@ else
   echo "[1/2] Cowork: skipped (no cowork-map.txt or no OUTPUTS folder)"
 fi
 
-# ─── STEP 2: Projects .md files ↔ Repo (bidirectional, recursive) ───────────
+# ─── STEP 2: Projects files ↔ Repo (bidirectional, recursive) ────────────────
+# Syncs: .md (briefs/configs), .html (dashboards), .json (data configs)
 # Local → Repo (desktop edits go to repo for pushing to phone/tablet)
-while IFS= read -r -d '' md_file; do
-  rel_path="${md_file#$LOCAL/}"
+while IFS= read -r -d '' src_file; do
+  rel_path="${src_file#$LOCAL/}"
   repo_file="$REPO/$rel_path"
   mkdir -p "$(dirname "$repo_file")"
-  if [ ! -f "$repo_file" ] || [ "$md_file" -nt "$repo_file" ]; then
-    cp "$md_file" "$repo_file"
+  if [ ! -f "$repo_file" ] || [ "$src_file" -nt "$repo_file" ]; then
+    cp "$src_file" "$repo_file"
   fi
-done < <(find "$LOCAL" -name "*.md" -print0 2>/dev/null)
+done < <(find "$LOCAL" \( -name "*.md" -o -name "*.html" \) -not -path "*/node_modules/*" -print0 2>/dev/null)
 
 # Repo → Local (phone/tablet edits come back to desktop)
-while IFS= read -r -d '' md_file; do
-  rel_path="${md_file#$REPO/}"
+while IFS= read -r -d '' src_file; do
+  rel_path="${src_file#$REPO/}"
   # Skip Claude Code internal project dirs
   [[ "$rel_path" == C--* ]] && continue
   local_file="$LOCAL/$rel_path"
   mkdir -p "$(dirname "$local_file")"
-  if [ ! -f "$local_file" ] || [ "$md_file" -nt "$local_file" ]; then
-    cp "$md_file" "$local_file"
+  if [ ! -f "$local_file" ] || [ "$src_file" -nt "$local_file" ]; then
+    cp "$src_file" "$local_file"
   fi
-done < <(find "$REPO" -name "*.md" -print0 2>/dev/null)
+done < <(find "$REPO" \( -name "*.md" -o -name "*.html" \) -not -path "*/node_modules/*" -print0 2>/dev/null)
 
 # ─── STEP 2.5: Fix misplaced output folders in repo ──────────────────────────
 # Cowork/Claude app sometimes creates folders at outputs/ root instead of the
