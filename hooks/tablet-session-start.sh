@@ -5,10 +5,7 @@
 
 REPO="/home/user/SICT"
 
-# Pull latest
-cd "$REPO" && git pull origin master --ff-only 2>/dev/null
-
-# Symlink key directories
+# Symlink key directories first (instant, critical)
 for dir in agents commands emergent-learning hooks outputs projects scripts skills; do
   if [ -d "$REPO/$dir" ] && [ ! -L "$HOME/.claude/$dir" ]; then
     rm -rf "$HOME/.claude/$dir" 2>/dev/null
