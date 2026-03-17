@@ -1,1 +1,6 @@
-Cross-device sync fully set up: Desktop + Phone + Tablet all syncing via GitHub (Marcati3/SICT). Termux installed on tablet but not needed if Claude app Code module works. Consider uninstalling Termux from tablet.
+- Cross-device sync fully operational: Desktop + Phone + Tablet + Browser
+- Cowork cannot sync (no git) - use Claude Code for synced work
+- ELF dashboard needs restart if blank - kill node processes first
+- Midoriya MOU at v4, typos fixed in v2
+- All project briefs and outputs now in repo
+- Repo is public (no PAT needed for pulls)

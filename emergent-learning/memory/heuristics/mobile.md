@@ -24,3 +24,13 @@ scipy requires native compilation on ARM which takes 20+ minutes or fails. peewe
 
 ---
 
+## H-7: Claude app Code module has full terminal and git - Termux not needed on phone or tablet
+
+**Confidence**: 0.95
+**Source**: observation
+**Created**: 2026-03-17
+
+The Claude Android/iOS app Code module can run git clone, git push, and access the filesystem. No need for Termux.
+
+---
+

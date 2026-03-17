@@ -14,3 +14,13 @@ The query system failed on every conversation start due to missing Python packag
 
 ---
 
+## H-8: Vite dev server proxy breaks on stale node processes - kill and restart to fix 404s
+
+**Confidence**: 0.85
+**Source**: observation
+**Created**: 2026-03-17
+
+When Vite proxy returns 404 for API routes that exist on the backend, kill all node processes and restart the dev server.
+
+---
+

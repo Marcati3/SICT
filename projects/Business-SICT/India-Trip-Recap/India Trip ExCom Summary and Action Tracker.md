@@ -68,9 +68,46 @@ Applied all changes. Generated v3 with:
 
 ---
 
+**User**  _2026-03-17_
+
+Uploaded final revised version (v4). Key changes from v3:
+
+Competitive Landscape — reordered and reworded:
+- NXP SLIX2: "two price increases" (written out), "ST Micro" (full name), added "SIC can capitalize with SIC56NL"
+- NXP NTAG 424: "potential opportunity for SIC43S1" (not "direct opportunity")
+- Impinj/NXP: "dominating" (not "dominate")
+- ST Micro: full name used throughout
+- EM: "EM4305" (full part number)
+
+Confirmed Orders & Pipeline — $ values on every line:
+- $37k + $230k = $267k "new order received" (not "confirmed")
+- APK ID: $344k
+- Syrma + Rapid Radio: $255k
+- TATA: "~25k pilot" (not "20-25k initial"), $55k
+- Syrma pharma: $780k
+- Elektronika NPCI: $500k
+
+Risks — reduced to 2 bullets only (removed pricing, app engineering, channel):
+- Product gaps
+- 6D ASIC timing
+
+Strategic Growth Vectors — $ values added:
+- 6D ASIC: $30k, "need to confirm capability"
+- IVF: $20k, "no available product"
+
+Bottom stat bar:
+- "Confirmed Orders" → "New Orders"
+- "Addressable Pcs/Yr" → "SAM Pcs/Yr"
+- Added $ prefix to 5-7.5M
+
+Also requested: save as reusable template for all future trip recaps.
+
+---
+
 **Outputs delivered to:** `CLAUDE OUTPUTS/Business-SICT/India-Trip/`
 
 - `India-Trip_Action-Tracker_v1.xlsx`
 - `India-Trip_ExCom-Summary_v1.pptx`
 - `India-Trip_ExCom-Summary_v2.pptx`
 - `India-Trip_ExCom-Summary_v3.pptx`
+- `India-Trip_ExCom-Summary_v4.pptx` (Marc's final revision)

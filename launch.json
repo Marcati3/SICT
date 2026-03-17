@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "sales-dashboard",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:\\Users\\intln\\Claude\\Projects\\Business-SICT\\SIC-Dashboards\\sales\\serve.js"],
+      "port": 8766
+    }
+  ]
+}
