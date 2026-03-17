@@ -12,14 +12,21 @@
 sic-dashboards/
 ├── PROJECT.md              ← This file
 ├── sales/                  ← Sales KPI Dashboard
+│   ├── PROJECT-BRIEF.md
 │   ├── Sales_KPI_Dashboard_FY2026_v10.html   (current)
 │   ├── data/               ← Source Excel/CSV drops
 │   └── archive/            ← Previous versions
 ├── cae/                    ← CAE Pipeline & CRM Dashboard
-│   ├── CAE_Pipeline_Dashboard_FY2026_v1.html   (current)
+│   ├── PROJECT-BRIEF.md
+│   ├── CAE_Pipeline_Dashboard_FY2026_v2.4.html   (current)
 │   ├── build_dashboard.py  ← Generates HTML from data.json
 │   ├── process_data.py     ← Processes Excel → data.json
 │   └── data.json           ← Processed opportunity data
+├── npd/                    ← New Product Development Health Dashboard
+│   ├── PROJECT-BRIEF.md
+│   ├── New_Release_Product_Health_Dashboard.xlsx   (source data)
+│   ├── NPD_Board_Slide_Mar2026.pptx               (board slide)
+│   └── build_slide.py      ← Generates PPTX from dashboard data
 ├── marketing/              ← Marketing Dashboard (planned)
 └── docs/                   ← Build logs, reference docs
     └── SIC_Dashboard_Build_Log_v10.md
@@ -30,7 +37,8 @@ sic-dashboards/
 | Dashboard | Status | Owner |
 |-----------|--------|-------|
 | Sales KPI | v10 — Active, data refresh Mar 13 | Marc |
-| CAE Pipeline & CRM | v1 — Active, data from Mar 14 | Marc |
+| CAE Pipeline & CRM | v2.4 — Active, data from Mar 14 | Marc |
+| NPD Health | Active — 9 products, LEAN scoring, board slide Mar 2026 | Marc |
 | Marketing | Planned | TBD |
 
 ## Design Principles (All Dashboards)
