@@ -1,0 +1,29 @@
+{
+  "_INSTRUCTIONS": "Add this schema to blog posts. Best approach: Configure in Yoast SEO settings or add via Code Snippets plugin. Yoast should auto-generate Article schema if 'Organization' is set as the publisher in Yoast > Settings > Site Representation. If it's not generating, check that Yoast 'Article' schema is enabled for Posts.",
+
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "[POST TITLE - max 110 characters]",
+  "description": "[META DESCRIPTION]",
+  "image": "[FEATURED IMAGE URL]",
+  "datePublished": "[ISO 8601 DATE, e.g., 2026-03-15T00:00:00+07:00]",
+  "dateModified": "[ISO 8601 DATE]",
+  "author": {
+    "@type": "Person",
+    "name": "[AUTHOR NAME]",
+    "jobTitle": "[e.g., Senior RFID Engineer]",
+    "url": "[AUTHOR PAGE URL on sic.co.th]"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Silicon Craft Technology PLC",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.sic.co.th/wp-content/uploads/2024/12/cropped-logo-450px.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "[POST URL]"
+  }
+}

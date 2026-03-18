@@ -1,0 +1,40 @@
+# Security Headers for .htaccess
+# ================================
+# WHERE: Add these lines to the .htaccess file in the WordPress root directory
+# HOW: Via cPanel File Manager, FTP, or WordPress plugin (e.g., "Headers Security Advanced & HSTS WP")
+# IMPACT: Fixes zero security headers issue (Critical #3)
+# TEST: After adding, check https://securityheaders.com/?q=www.sic.co.th
+#
+# IMPORTANT: Add BEFORE the WordPress rewrite rules (before "# BEGIN WordPress")
+
+<IfModule mod_headers.c>
+    # HSTS - Force HTTPS for 1 year
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+    # Prevent clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Prevent MIME-type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Control referrer information
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Restrict browser features
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+    # XSS Protection (legacy browsers)
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Cache-Control Fix (addresses Performance score)
+# Static assets cached for 1 year
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>

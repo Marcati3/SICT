@@ -1,6 +1,6 @@
 import json, html
 
-with open(r'C:\Users\intln\Claude\Projects\SIC-Dashboards\cae\data.json') as f:
+with open(r'C:\Users\intln\Claude\Projects\Business-SICT\SIC-Dashboards\cae\data.json') as f:
     D = json.load(f)
 
 S = D['summary']
@@ -119,6 +119,53 @@ ttm_dist_keys_json = json.dumps([int(k) for k in ttm_dist_keys])
 ttm_ots_bars = json.dumps([ttm_by_mt.get(k, {}).get('Off-the-shelf', 0) for k in ttm_dist_keys])
 ttm_mod_bars = json.dumps([ttm_by_mt.get(k, {}).get('Modified', 0) for k in ttm_dist_keys])
 ttm_npi_bars = json.dumps([ttm_by_mt.get(k, {}).get('NPI', 0) for k in ttm_dist_keys])
+
+# Closed-Won table rows + pie chart data
+closed_won_rows = ''
+total_won_rev = 0
+won_by_product = {}
+won_rev_by_product = {}
+for w in D.get('closedWon', []):
+    rev = w.get('estRev', 0)
+    total_won_rev += rev
+    p = w.get('product', 'Unknown')
+    won_by_product[p] = won_by_product.get(p, 0) + 1
+    won_rev_by_product[p] = won_rev_by_product.get(p, 0) + rev
+    rev_str = f"${rev:,.0f}" if rev > 0 else '—'
+    vol_str = f"{w['volume']:,}" if w.get('volume') else '—'
+    closed_won_rows += f'''<tr>
+<td style="color:#94a3b8;font-size:10px">{esc(w["id"])}</td>
+<td>{esc(w["name"])}</td>
+<td>{esc(w["customer"])}</td>
+<td>{esc(w["product"])}</td>
+<td style="font-size:10px">{esc(w.get("productName",""))}</td>
+<td>{esc(w["saleProcess"])}</td>
+<td>{esc(w["cae"])}</td>
+<td style="color:#22c55e;font-weight:600">{esc(w["winDate"])}</td>
+<td style="text-align:right">{vol_str}</td>
+<td style="text-align:right">{rev_str}</td>
+<td style="font-size:10px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{esc(w["comment"])}">{esc(w["comment"])}</td>
+</tr>'''
+
+won_product_labels = json.dumps(list(won_by_product.keys()))
+won_product_counts = json.dumps(list(won_by_product.values()))
+won_product_rev_labels = json.dumps(list(won_rev_by_product.keys()))
+won_product_rev_values = json.dumps(list(won_rev_by_product.values()))
+
+# Recent comments table rows
+comment_rows = ''
+for c in D.get('recentComments', []):
+    sc = "STAGE_COLORS['" + c['stage'] + "']" if c['stage'] else "'#64748b'"
+    stage_color = {'New Lead':'#94a3b8','Contact':'#60a5fa','Qualified Lead':'#38bdf8','NDA':'#2dd4bf','Samples':'#a78bfa','Evaluation':'#f59e0b','Design-In':'#fb923c','PreProduction':'#f472b6','Design-Win':'#22c55e'}.get(c['stage'], '#64748b')
+    comment_rows += f'''<tr>
+<td style="color:#94a3b8;font-size:10px">{esc(c["id"])}</td>
+<td>{esc(c["name"])}</td>
+<td>{esc(c["customer"])}</td>
+<td><span class="stage-pill" style="background:{stage_color}30;color:{stage_color};border:1px solid {stage_color}50">{esc(c["stage"])}</span></td>
+<td>{esc(c["cae"])}</td>
+<td style="font-size:10px">{esc(c["modified"])}</td>
+<td style="font-size:11px;max-width:350px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{esc(c["comment"])}">{esc(c["comment"])}</td>
+</tr>'''
 
 dashboard_html = f'''<!DOCTYPE html>
 <html lang="en">
@@ -410,10 +457,53 @@ tfoot td{{background:#0f172a;font-weight:700;border-top:1px solid #475569;}}
   </div>
 </div>
 
-<!-- ═══ SECTION 7: STALLED OPPORTUNITIES ═══ -->
+<!-- ═══ SECTION 7: DESIGN WINS (CLOSED WON) ═══ -->
 <div class="section">
   <div class="section-header">
     <span class="section-number">07</span>
+    <h2>Design Wins — Closed Won ({S['totalDesignWins']} opportunities)</h2>
+  </div>
+  <div class="commentary" style="margin-bottom:12px;">
+    <strong>{S['totalDesignWins']} Design Wins</strong> with estimated total revenue <strong>${total_won_rev:,.0f}</strong>.
+    DIN&rarr;DWIN conversion rate: <strong style="color:{dindwin_color}">{din_dwin['rate']}%</strong> (target &gt;50%).
+  </div>
+  <div class="chart-row-2">
+    <div class="chart-box"><div id="wonByProductChart" style="height:340px;"></div></div>
+    <div class="chart-box"><div id="wonByRevenueChart" style="height:340px;"></div></div>
+  </div>
+  <div class="table-wrap" style="max-height:400px;overflow-y:auto;margin-top:12px;">
+    <table>
+      <thead style="position:sticky;top:0;z-index:10;"><tr>
+        <th>ID</th><th>Opportunity</th><th>Customer</th><th>Product Group</th><th>Product</th><th>Sale Process</th><th>CAE</th><th>Win Date</th><th style="text-align:right">Volume</th><th style="text-align:right">Est. Revenue</th><th>Comment</th>
+      </tr></thead>
+      <tbody>{closed_won_rows}</tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ SECTION 8: RECENT COMMENTS / ACTIVITY ═══ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">08</span>
+    <h2>Recent Activity — Latest Comments</h2>
+  </div>
+  <div class="commentary" style="margin-bottom:12px;">
+    <strong>Most recently modified opportunities</strong> with comments. Shows the latest 20 updates across the active pipeline.
+  </div>
+  <div class="table-wrap" style="max-height:400px;overflow-y:auto;">
+    <table>
+      <thead style="position:sticky;top:0;z-index:10;"><tr>
+        <th>ID</th><th>Opportunity</th><th>Customer</th><th>Stage</th><th>CAE</th><th>Modified</th><th>Latest Comment</th>
+      </tr></thead>
+      <tbody>{comment_rows}</tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ SECTION 9: STALLED OPPORTUNITIES ═══ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-number">09</span>
     <h2>Stalled Opportunities — Action Required</h2>
   </div>
   <div class="commentary" style="margin-bottom:12px;">
@@ -427,10 +517,10 @@ tfoot td{{background:#0f172a;font-weight:700;border-top:1px solid #475569;}}
   </div>
 </div>
 
-<!-- ═══ SECTION 8: CRM PIPELINE TABLE ═══ -->
+<!-- ═══ SECTION 10: CRM PIPELINE TABLE ═══ -->
 <div class="section">
   <div class="section-header">
-    <span class="section-number">08</span>
+    <span class="section-number">10</span>
     <h2>CRM — Full Pipeline View</h2>
   </div>
   <div class="filter-bar">
@@ -673,6 +763,30 @@ Plotly.newPlot('spChart',[{{
   margin:{{l:40,r:20,t:40,b:50}},xaxis:{{...PL.xaxis,type:'category'}},yaxis:{{gridcolor:'#334155',zerolinecolor:'#475569',type:'linear',title:'Opportunities',rangemode:'tozero'}},showlegend:false}},cfg);
 }}catch(e){{console.error('spChart:',e);}}
 
+try{{
+Plotly.newPlot('wonByProductChart',[{{
+  type:'pie',labels:{won_product_labels},values:{won_product_counts},
+  hole:0.4,textinfo:'label+value+percent',textposition:'auto',
+  marker:{{colors:['#3b82f6','#8b5cf6','#22c55e','#f59e0b','#ef4444','#14b8a6','#f472b6','#64748b']}},
+  textfont:{{size:11,color:'#f1f5f9'}},
+  insidetextorientation:'horizontal'
+}}],{{...PL,title:{{text:'Design Wins by Product Segment',font:{{size:14,color:'#f1f5f9'}}}},
+  margin:{{l:10,r:10,t:50,b:10}},showlegend:true,
+  legend:{{font:{{size:11,color:'#cbd5e1'}},x:0,y:-0.15,orientation:'h'}}}},cfg);
+}}catch(e){{console.error('wonByProductChart:',e);}}
+
+try{{
+Plotly.newPlot('wonByRevenueChart',[{{
+  type:'pie',labels:{won_product_rev_labels},values:{won_product_rev_values},
+  hole:0.4,textinfo:'label+percent',textposition:'auto',
+  marker:{{colors:['#3b82f6','#8b5cf6','#22c55e','#f59e0b','#ef4444','#14b8a6','#f472b6','#64748b']}},
+  textfont:{{size:11,color:'#f1f5f9'}},
+  insidetextorientation:'horizontal'
+}}],{{...PL,title:{{text:'Design Win Revenue by Product Segment',font:{{size:14,color:'#f1f5f9'}}}},
+  margin:{{l:10,r:10,t:50,b:10}},showlegend:true,
+  legend:{{font:{{size:11,color:'#cbd5e1'}},x:0,y:-0.15,orientation:'h'}}}},cfg);
+}}catch(e){{console.error('wonByRevenueChart:',e);}}
+
 // CRM TABLE
 let sortCol='days', sortAsc=false, filtered=CRM_DATA.slice();
 
@@ -756,7 +870,7 @@ renderCRM();
 
 import glob, re as re_mod
 
-out_dir = r'C:\Users\intln\Claude\Projects\SIC-Dashboards\cae'
+out_dir = r'C:\Users\intln\Claude\Projects\Business-SICT\SIC-Dashboards\cae'
 existing = glob.glob(f'{out_dir}/CAE_Pipeline_Dashboard_FY2026_v*.html')
 max_ver = 0
 for f in existing:

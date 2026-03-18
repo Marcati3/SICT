@@ -1,0 +1,48 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Corporation",
+  "name": "Silicon Craft Technology PLC",
+  "alternateName": ["SIC", "Silicon Craft", "SICT"],
+  "legalName": "Silicon Craft Technology Public Company Limited",
+  "tickerSymbol": "SIC",
+  "url": "https://www.sic.co.th/",
+  "logo": "https://www.sic.co.th/wp-content/uploads/2024/12/cropped-logo-450px.png",
+  "description": "Thailand's leading semiconductor and only IC design company, specializing in RFID chip and ASIC designs with over 20 years of experience.",
+  "foundingDate": "2002",
+  "industry": "Semiconductor",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[INSERT FULL STREET ADDRESS]",
+    "addressLocality": "Bangkok",
+    "addressRegion": "[INSERT PROVINCE/DISTRICT]",
+    "postalCode": "[INSERT POSTAL CODE]",
+    "addressCountry": "TH"
+  },
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "+66-2-589-9991",
+      "contactType": "sales",
+      "email": "info@sic.co.th",
+      "availableLanguage": ["English", "Thai"]
+    }
+  ],
+  "sameAs": [
+    "https://www.facebook.com/siliconcraftth",
+    "https://x.com/SiliconCraftth",
+    "https://www.linkedin.com/company/siliconcraftth",
+    "https://www.youtube.com/@SiliconCraftTH"
+  ],
+  "award": [
+    "Forbes Asia's Best Under a Billion 2024",
+    "Thailand Cybersecurity Product and Service Awards 2025 - Performance Efficiency Excellence Award"
+  ],
+  "knowsAbout": [
+    "RFID chip design",
+    "ASIC design",
+    "NFC technology",
+    "Animal identification",
+    "Immobilizer transponders",
+    "Industrial IoT"
+  ]
+}

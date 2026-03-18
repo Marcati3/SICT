@@ -90,7 +90,8 @@ fi
 #   Social:     .mp4 .mov .mp3 .wav
 SYNC_EXTENSIONS="-name *.md -o -name *.html -o -name *.txt -o -name *.csv -o -name *.json \
   -o -name *.docx -o -name *.xlsx -o -name *.pptx -o -name *.doc -o -name *.xls -o -name *.ppt \
-  -o -name *.pdf \
+  -o -name *.pdf -o -name *.zip \
+  -o -name *.py -o -name *.js -o -name *.ts \
   -o -name *.png -o -name *.jpg -o -name *.jpeg -o -name *.gif -o -name *.svg -o -name *.webp -o -name *.ico -o -name *.bmp \
   -o -name *.mp4 -o -name *.mov -o -name *.mp3 -o -name *.wav"
 
@@ -102,7 +103,7 @@ while IFS= read -r -d '' src_file; do
   if [ ! -f "$repo_file" ] || [ "$src_file" -nt "$repo_file" ]; then
     cp "$src_file" "$repo_file"
   fi
-done < <(eval "find \"$LOCAL\" \( $SYNC_EXTENSIONS \) -not -path '*/node_modules/*' -not -path '*/data/*' -print0" 2>/dev/null)
+done < <(eval "find \"$LOCAL\" \( $SYNC_EXTENSIONS \) -not -path '*/node_modules/*' -not -path '*/package-lock.json' -print0" 2>/dev/null)
 
 # Repo → Local (phone/tablet edits come back to desktop)
 while IFS= read -r -d '' src_file; do
@@ -114,7 +115,7 @@ while IFS= read -r -d '' src_file; do
   if [ ! -f "$local_file" ] || [ "$src_file" -nt "$local_file" ]; then
     cp "$src_file" "$local_file"
   fi
-done < <(eval "find \"$REPO\" \( $SYNC_EXTENSIONS \) -not -path '*/node_modules/*' -not -path '*/data/*' -print0" 2>/dev/null)
+done < <(eval "find \"$REPO\" \( $SYNC_EXTENSIONS \) -not -path '*/node_modules/*' -not -path '*/package-lock.json' -print0" 2>/dev/null)
 
 # ─── STEP 2.5: Fix misplaced output folders in repo ──────────────────────────
 # Cowork/Claude app sometimes creates folders at outputs/ root instead of the

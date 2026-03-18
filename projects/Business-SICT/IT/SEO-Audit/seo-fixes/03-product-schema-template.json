@@ -1,0 +1,31 @@
+{
+  "_INSTRUCTIONS": "Add this schema to each WooCommerce product page. Replace all [PLACEHOLDERS]. Best approach: Install 'Yoast WooCommerce SEO' plugin which auto-generates Product schema from WooCommerce product data. If doing manually, add via Code Snippets plugin or theme functions.php.",
+
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "[PRODUCT NAME, e.g., SIC4310 NFC Tag IC]",
+  "description": "[PRODUCT DESCRIPTION - 50-160 characters]",
+  "image": "[PRODUCT IMAGE URL]",
+  "sku": "[SKU NUMBER]",
+  "brand": {
+    "@type": "Brand",
+    "name": "Silicon Craft Technology"
+  },
+  "manufacturer": {
+    "@type": "Organization",
+    "name": "Silicon Craft Technology PLC",
+    "url": "https://www.sic.co.th/"
+  },
+  "category": "[e.g., NFC Tag IC / Industrial IoT / Animal ID]",
+  "offers": {
+    "@type": "Offer",
+    "url": "[PRODUCT PAGE URL]",
+    "priceCurrency": "THB",
+    "price": "[PRICE]",
+    "availability": "https://schema.org/InStock",
+    "seller": {
+      "@type": "Organization",
+      "name": "Silicon Craft Technology PLC"
+    }
+  }
+}

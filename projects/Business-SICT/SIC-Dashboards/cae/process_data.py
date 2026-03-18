@@ -307,6 +307,49 @@ kpis = {
     },
 }
 
+# =====================================================================
+# Closed-Won (Design-Win) records
+# =====================================================================
+design_wins = active[active['Pipeline Stage'] == 'Design-Win'].copy()
+design_wins_sorted = design_wins.sort_values('S9-DWIN-Entry-Date', ascending=False, na_position='last')
+closed_won_list = []
+for _, r in design_wins_sorted.iterrows():
+    closed_won_list.append({
+        'id': r['Opportunity ID'],
+        'name': str(r['Opportunity Name'])[:70] if pd.notna(r['Opportunity Name']) else '',
+        'customer': str(r['Customer Name'])[:50] if pd.notna(r['Customer Name']) else '',
+        'product': r['Product Group'],
+        'saleProcess': str(r['Sale Process']) if pd.notna(r['Sale Process']) else '',
+        'cae': str(r['CAE in-charge']) if pd.notna(r['CAE in-charge']) else 'Unassigned',
+        'salesperson': map_sp(r['Customer Name:Sale Person Code']),
+        'winDate': r['S9-DWIN-Entry-Date'].strftime('%Y-%m-%d') if pd.notna(r['S9-DWIN-Entry-Date']) else '',
+        'registered': r['Register Date'].strftime('%Y-%m-%d') if pd.notna(r['Register Date']) else '',
+        'volume': int(r['Expected Volume']) if pd.notna(r['Expected Volume']) else 0,
+        'price': round(float(r['Target Price (USD)']), 4) if pd.notna(r['Target Price (USD)']) else 0,
+        'estRev': round(float(r['Expected Volume'] * r['Target Price (USD)']), 2) if pd.notna(r['Expected Volume']) and pd.notna(r['Target Price (USD)']) else 0,
+        'comment': str(r['Daily Latest Comment'])[:120] if pd.notna(r['Daily Latest Comment']) else '',
+        'country': str(r['Country']) if pd.notna(r['Country']) else '',
+        'productName': str(r['Product Name']) if pd.notna(r['Product Name']) else '',
+        'productCode': str(r['Product Code']) if pd.notna(r['Product Code']) else '',
+    })
+
+# =====================================================================
+# Recent comments / activity — latest modified records with comments
+# =====================================================================
+has_comments = active[active['Daily Latest Comment'].notna()].copy()
+has_comments_sorted = has_comments.sort_values('Modified', ascending=False).head(20)
+recent_comments = []
+for _, r in has_comments_sorted.iterrows():
+    recent_comments.append({
+        'id': r['Opportunity ID'],
+        'name': str(r['Opportunity Name'])[:60] if pd.notna(r['Opportunity Name']) else '',
+        'customer': str(r['Customer Name'])[:40] if pd.notna(r['Customer Name']) else '',
+        'stage': r['Pipeline Stage'],
+        'cae': str(r['CAE in-charge']) if pd.notna(r['CAE in-charge']) else 'Unassigned',
+        'modified': r['Modified'].strftime('%Y-%m-%d') if pd.notna(r['Modified']) else '',
+        'comment': str(r['Daily Latest Comment'])[:200] if pd.notna(r['Daily Latest Comment']) else '',
+    })
+
 all_data = {
     'summary': summary,
     'kpis': kpis,
@@ -323,9 +366,11 @@ all_data = {
     'conversion': conversion_data,
     'sourceOfLead': source_counts,
     'crm': crm_records,
+    'closedWon': closed_won_list,
+    'recentComments': recent_comments,
 }
 
-with open(r'C:\Users\intln\Claude\Projects\SIC-Dashboards\cae\data.json', 'w') as f:
+with open(r'C:\Users\intln\Claude\Projects\Business-SICT\SIC-Dashboards\cae\data.json', 'w') as f:
     json.dump(all_data, f)
 
 print(f"Exported: {len(crm_records)} active, {len(stalled_list)} stalled")
