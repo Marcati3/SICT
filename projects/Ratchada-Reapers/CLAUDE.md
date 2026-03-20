@@ -27,6 +27,23 @@ Ratchada Reapers — Thailand ice hockey team branding, graphics, and merchandis
 3. One-color and two-color logo variants
 4. Sponsor lockup with Buddy's Bar & Grill
 
+## Output Folder Rules (MANDATORY)
+
+**NEVER save output files to the project root.** All outputs go into the appropriate subfolder:
+
+| Folder | What goes there |
+|---|---|
+| `Logo/` | Logo files — all formats (PNG, SVG, AI, PDF), all variants (full color, one-color, two-color, embroidery) |
+| `Merch/` | Merchandise layouts, t-shirt designs, print-ready files |
+| `Branding/` | Color specs, Pantone references, typography, sponsor lockups |
+| `Music/` | Fight song files, audio prompts, lyrics |
+
+**Within each folder, create a descriptive subfolder** for the workstream if needed (e.g., `Logo/Variants/`, `Merch/T-Shirts/`).
+
+Every new output folder gets a `PROJECT-BRIEF.md`.
+
+**Never save outputs to Downloads, Desktop, or any location outside this project tree.**
+
 ## Working Style
 
 This project is design-driven. When continuing work:

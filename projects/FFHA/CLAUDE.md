@@ -27,6 +27,22 @@ FFHA — Flying Farangs Hockey Association (สมาคมฟลายอิ้
 3. Registration filing at District Office not yet submitted
 4. Bank account authorization includes FFHL treasurer Pascal Bhangay
 
+## Output Folder Rules (MANDATORY)
+
+**NEVER save output files to the project root.** All outputs go into the appropriate subfolder:
+
+| Folder | What goes there |
+|---|---|
+| `Legal-Documents/` | Bylaws, minutes, registration forms, application packages |
+| `Bank/` | Bank account documentation, authorization letters |
+| `Supporting-Docs/` | ID copies, maps, supplementary materials |
+
+**Within each folder, create a descriptive subfolder** for the workstream if needed (e.g., `Legal-Documents/Registration-Package/`).
+
+Every new output folder gets a `PROJECT-BRIEF.md`.
+
+**Never save outputs to Downloads, Desktop, or any location outside this project tree.**
+
 ## Working Style
 
 - Read `PROJECT-BRIEF.md` for full context before acting

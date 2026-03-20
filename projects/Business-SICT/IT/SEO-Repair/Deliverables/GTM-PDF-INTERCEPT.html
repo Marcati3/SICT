@@ -1,0 +1,73 @@
+<!--
+  GTM Custom HTML Tag: PDF Download Gate
+  Container: GT-PLVXX5CG
+  Trigger: All Pages
+
+  Purpose: Intercepts clicks on brochure PDF links and redirects
+  to the download gate form. Does NOT intercept customer-portal
+  datasheet links (those are already gated).
+
+  Installation:
+  1. Go to tagmanager.google.com
+  2. Open container GT-PLVXX5CG
+  3. Create new Tag > Custom HTML
+  4. Paste this entire block
+  5. Trigger: All Pages
+  6. Save and Publish
+-->
+<script>
+(function() {
+  // PDFs to gate (brochures only — datasheets already go through customer portal)
+  var gatePDFs = [
+    'documents.sic.co.th/popup/',
+    'wp-content/uploads/',
+    '.pdf'
+  ];
+
+  // URLs to NOT gate (customer portal is already gated)
+  var skipURLs = [
+    'customer-portal',
+    'webapp.sic.co.th'
+  ];
+
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('a');
+    if (!link) return;
+
+    var href = link.href || '';
+
+    // Skip if it's a customer portal link (already gated)
+    for (var i = 0; i < skipURLs.length; i++) {
+      if (href.indexOf(skipURLs[i]) > -1) return;
+    }
+
+    // Check if it's a PDF link
+    var isPDF = false;
+    for (var j = 0; j < gatePDFs.length; j++) {
+      if (href.toLowerCase().indexOf(gatePDFs[j].toLowerCase()) > -1 && href.toLowerCase().indexOf('.pdf') > -1) {
+        isPDF = true;
+        break;
+      }
+    }
+
+    if (isPDF) {
+      e.preventDefault();
+
+      // Extract document name from URL for the form
+      var docName = href.split('/').pop().replace('.pdf', '').replace(/_/g, ' ');
+
+      // Redirect to download gate page with document reference
+      window.location.href = '/download-brochure/?doc=' + encodeURIComponent(docName);
+
+      // Track in dataLayer
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          'event': 'pdf_gate_redirect',
+          'pdf_name': docName,
+          'pdf_url': href
+        });
+      }
+    }
+  });
+})();
+</script>

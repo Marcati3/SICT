@@ -1,0 +1,39 @@
+# Silicon Craft Technology PLC (SIC)
+# https://www.sic.co.th
+
+> Thailand's leading semiconductor and only IC design company, specializing in RFID chip and ASIC designs.
+
+## Company Overview
+Silicon Craft Technology PLC is a fabless semiconductor company listed on the Stock Exchange of Thailand (SET: SIC). Founded in 2002, the company has over 20 years of experience designing RFID, NFC, and custom ASIC solutions. SIC is a BOI A1 Tier company and the only IC design house in Thailand.
+
+## Core Products
+- **NFC Tag ICs**: SIC4310, SIC4340, SIC4341, SIC4343 — for energy harvesting, web authentication, and sensor interface
+- **Industrial IoT**: ISO/IEC 15693 Tag ICs, LF HDX/FDX transponders, Multi-Protocol HF Reader ICs
+- **Animal Identification**: LF transponder ICs for livestock tracking (ISO 11784/11785)
+- **Immobilizer Transponders**: Automotive anti-theft IC solutions
+- **Sensor Interface**: SIC7150, SIC61 family — analog front-end ICs
+- **ASIC Design Services**: Custom IC design from specification to silicon
+
+## Key Applications
+- Healthcare (NFC-enabled medical devices, pH measurement)
+- Brand Protection (product authentication via RFID)
+- Access Control (contactless entry systems)
+- Automotive (immobilizer transponders)
+- Livestock Management (animal identification and tracking)
+- Smart Logistics (supply chain tracking)
+
+## Awards & Recognition
+- Forbes Asia's Best Under a Billion 2024
+- Thailand Cybersecurity Product and Service Awards 2025
+
+## Contact
+- Website: https://www.sic.co.th
+- Email: info@sic.co.th
+- Phone: +66 2 589 9991
+- Design Tools: https://webapp.sic.co.th/nfcdesigntools/
+
+## Resources
+- Products: https://www.sic.co.th/products/
+- Blog & Articles: https://www.sic.co.th/blog/
+- White Papers: https://www.sic.co.th/category/white-papers/
+- Careers: https://www.sic.co.th/careers/

@@ -26,6 +26,26 @@ Business - SICT: Commercial strategy, fundraising, and legal/HR matters for Sili
 2. Engage Priority A accounts — Tive, eloc8, OnAsset Intelligence, TI
 3. Build 3-year revenue ramp model for Tier-2 smart logistics
 
+## Output Folder Rules (MANDATORY)
+
+**NEVER save output files to the project root.** All outputs go into the appropriate **department subfolder**:
+
+| Department Folder | What goes there |
+|---|---|
+| `IT/` | SEO, schema, server config, technical work |
+| `Marketing/` | Marketing deliverables, campaigns, collateral |
+| `HR/` | HR documents, JDs, org charts, policies |
+| `Sales/` | Sales materials, proposals, account plans |
+| `Competitive-Intel/` | Competitor analysis, market research |
+| `Opportunities/` | Deal tracking, partnership evaluations |
+| `SIC-Dashboards/` | Dashboard outputs (see `SIC-Dashboards/PROJECT.md`) |
+
+**Within each department folder, create a descriptive subfolder** for the workstream (e.g., `IT/SEO-Audit/`, `Sales/Pitch-Decks/`, `HR/Recruitment/`).
+
+Every new output folder gets a `PROJECT-BRIEF.md`.
+
+**Never save outputs to Downloads, Desktop, or any location outside this project tree.**
+
 ## Working Style
 
 - Read `PROJECT-BRIEF.md` for full context before acting

@@ -14,3 +14,13 @@ Repeatedly saved SIC dashboard output to Downloads instead of Projects/SIC-Dashb
 
 ---
 
+## H-9: Output folder rules must live in each project CLAUDE.md, not just in memory or global config
+
+**Confidence**: 0.95
+**Source**: observation
+**Created**: 2026-03-20
+
+Memory files and global CLAUDE.md are not reliably loaded when sessions start from project directories. Project CLAUDE.md is the only file guaranteed in context. Rules only in memory got violated 4+ sessions in a row.
+
+---
+

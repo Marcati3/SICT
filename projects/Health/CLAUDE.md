@@ -26,6 +26,23 @@ Health — Personal medical and health management tracking. Pharmaceutical weigh
 3. **Mounjaro dose** — stable at 2.5 mg, decision pending on retry of 5 mg
 4. **CPAP leak resolution** — new nasal pillow cushion ordered Dec 2025
 
+## Output Folder Rules (MANDATORY)
+
+**NEVER save output files to the project root.** All outputs go into the appropriate subfolder:
+
+| Folder | What goes there |
+|---|---|
+| `Lab-Results/` | Blood work summaries, lab tracking spreadsheets |
+| `CPAP/` | Sleep data exports, CPAP setting logs, mask notes |
+| `Medications/` | Dosing histories, titration logs, side effect tracking |
+| `Protocols/` | Diet plans, supplement stacks, exercise protocols |
+
+**Within each folder, create a descriptive subfolder** for the workstream if needed (e.g., `Lab-Results/2026-Q1/`).
+
+Every new output folder gets a `PROJECT-BRIEF.md`.
+
+**Never save outputs to Downloads, Desktop, or any location outside this project tree.**
+
 ## Working Style
 
 - Read `PROJECT-BRIEF.md` for full context before acting

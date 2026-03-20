@@ -1,0 +1,83 @@
+source,target,type,code,match,title,group
+/product/sic61au/,/products/immobilizer-transponder/,url,301,url,"Immobilizer generic → category",Redirects
+/product/sic61xx/,/products/immobilizer-transponder/,url,301,url,"Immobilizer family → category",Redirects
+/product/sic6111/,/product/sic6146-id46-automotive-immobilizer-transponder/,url,301,url,"Old product → ID46",Redirects
+/product/sic6112/,/product/sic6146-id46-automotive-immobilizer-transponder/,url,301,url,"Old product → ID46",Redirects
+/product/sic6113/,/product/sic6146e-id46-extended-automotive-immobilizer-transponder/,url,301,url,"Old product → ID46 Extended",Redirects
+/product/sic6120/,/product/sic6148-id48-automotive-immobilizer-transponder/,url,301,url,"Old product → ID48",Redirects
+/product/sic6121/,/product/sic6148-id48-automotive-immobilizer-transponder/,url,301,url,"Old product → ID48",Redirects
+/product/sic6130/,/product/sic614a-id4a-automotive-immobilizer-transponder/,url,301,url,"Old product → ID4A",Redirects
+/product/sic6131/,/product/sic614a-id4a-automotive-immobilizer-transponder/,url,301,url,"Old product → ID4A",Redirects
+/product/sic6140/,/product/sic614d-id4d-automotive-immobilizer-transponder/,url,301,url,"Old product → ID4D",Redirects
+/product/sic6150/,/product/sic614e-id4e-id46-automotive-immobilizer-transponder/,url,301,url,"Old product → ID4E",Redirects
+/product/sic6160/,/product/sic618a-id8a-automotive-immobilizer-transponder/,url,301,url,"Old product → ID8A",Redirects
+/product/sic6170/,/product/sic618c-id8c-automotive-immobilizer-transponder/,url,301,url,"Old product → ID8C",Redirects
+/product/sic7150/,/product/lf-fdx-b-ic-with-r-w-memory-320-bits-sic7150/,url,301,url,"SIC7150 short → full URL",Redirects
+/about/,/our-brand/,url,301,url,"About → Our Brand",Redirects
+/about-us/,/our-brand/,url,301,url,"About Us → Our Brand",Redirects
+/about-sic/,/our-brand/,url,301,url,"About SIC → Our Brand",Redirects
+/company/,/our-brand/,url,301,url,"Company → Our Brand",Redirects
+/team/,/our-brand/,url,301,url,"Team → Our Brand",Redirects
+/our-team/,/our-brand/,url,301,url,"Our Team → Our Brand",Redirects
+/technology/,/products/,url,301,url,"Technology → Products",Redirects
+/news/,/blog/,url,301,url,"News → Blog",Redirects
+/events/,/blog/,url,301,url,"Events → Blog",Redirects
+/press/,/blog/,url,301,url,"Press → Blog",Redirects
+/media/,/blog/,url,301,url,"Media → Blog",Redirects
+/datasheet/,/products/,url,301,url,"Datasheet → Products",Redirects
+/datasheets/,/products/,url,301,url,"Datasheets → Products",Redirects
+/downloads/,/products/,url,301,url,"Downloads → Products",Redirects
+/download/,/products/,url,301,url,"Download → Products",Redirects
+/resources/,/products/,url,301,url,"Resources → Products",Redirects
+/documentation/,/products/,url,301,url,"Documentation → Products",Redirects
+/docs/,/products/,url,301,url,"Docs → Products",Redirects
+/catalog/,/products/,url,301,url,"Catalog → Products",Redirects
+/catalogue/,/products/,url,301,url,"Catalogue → Products",Redirects
+/whitepaper/,/products/,url,301,url,"Whitepaper → Products",Redirects
+/whitepapers/,/products/,url,301,url,"Whitepapers → Products",Redirects
+/white-paper/,/products/,url,301,url,"White Paper → Products",Redirects
+/application-notes/,/applications/,url,301,url,"App Notes → Applications",Redirects
+/technical/,/products/,url,301,url,"Technical → Products",Redirects
+/support/,/contact/,url,301,url,"Support → Contact",Redirects
+/faq/,/contact/,url,301,url,"FAQ → Contact",Redirects
+/partners/,/contact/,url,301,url,"Partners → Contact",Redirects
+/distributors/,/contact/,url,301,url,"Distributors → Contact",Redirects
+/sample/,/contact/,url,301,url,"Sample → Contact",Redirects
+/sample-request/,/contact/,url,301,url,"Sample Request → Contact",Redirects
+/request-sample/,/contact/,url,301,url,"Request Sample → Contact",Redirects
+/inquiry/,/contact/,url,301,url,"Inquiry → Contact",Redirects
+/enquiry/,/contact/,url,301,url,"Enquiry → Contact",Redirects
+/quote/,/contact/,url,301,url,"Quote → Contact",Redirects
+/request-quote/,/contact/,url,301,url,"Request Quote → Contact",Redirects
+/solutions/,/applications/,url,301,url,"Solutions → Applications",Redirects
+/iot/,/products/industrial-iot/,url,301,url,"IoT → Industrial IoT",Redirects
+/biosensor/,/products/sensor-interface-products/,url,301,url,"Biosensor → Sensor Products",Redirects
+/rfid/,/products/industrial-iot/,url,301,url,"RFID → Industrial IoT",Redirects
+/nfc/,/products/nfc-chip/,url,301,url,"NFC → NFC Chip",Redirects
+/sensor/,/products/sensor-interface-products/,url,301,url,"Sensor → Sensor Products",Redirects
+/immobilizer/,/products/immobilizer-transponder/,url,301,url,"Immobilizer → Immobilizer",Redirects
+/animal-id/,/products/animal-id/,url,301,url,"Animal ID → Animal ID",Redirects
+/automotive/,/products/immobilizer-transponder/,url,301,url,"Automotive → Immobilizer",Redirects
+/industrial/,/products/industrial-iot/,url,301,url,"Industrial → Industrial IoT",Redirects
+/healthcare/,/applications/healthcare/,url,301,url,"Healthcare → Healthcare App",Redirects
+/brand-protection/,/applications/brand-protection/,url,301,url,"Brand Protection → App",Redirects
+/terms-and-conditions/,/terms-of-service/,url,301,url,"T&C → ToS",Redirects
+/sitemap/,/sitemap_index.xml,url,301,url,"Sitemap → XML Sitemap",Redirects
+/register/,/my-account/,url,301,url,"Register → My Account",Redirects
+/product-category/rfid/,/product-category/industrial-iot/,url,301,url,"Cat: RFID → Industrial IoT",Redirects
+/product-category/lf/,/product-category/animal-id/,url,301,url,"Cat: LF → Animal ID",Redirects
+/product-category/hf/,/product-category/industrial-iot/multi-protocol-hf-reader-ic/,url,301,url,"Cat: HF → HF Reader",Redirects
+/product-category/uhf/,/product-category/industrial-iot/,url,301,url,"Cat: UHF → Industrial IoT",Redirects
+/product-category/sensor/,/product-category/sensor-interface-products/,url,301,url,"Cat: Sensor → Sensor Products",Redirects
+/product-category/reader/,/product-category/industrial-iot/multi-protocol-hf-reader-ic/,url,301,url,"Cat: Reader → HF Reader",Redirects
+/product-category/transponder/,/product-category/animal-id/,url,301,url,"Cat: Transponder → Animal ID",Redirects
+/product-category/tag/,/product-category/nfc/,url,301,url,"Cat: Tag → NFC",Redirects
+/product-category/automotive/,/product-category/immobilizer/,url,301,url,"Cat: Automotive → Immobilizer",Redirects
+/product-category/nfc-tag/,/product-category/nfc/,url,301,url,"Cat: NFC Tag → NFC",Redirects
+/product-category/biosensor/,/product-category/sensor-interface-products/biosensor-sensor-interface-chip/,url,301,url,"Cat: Biosensor → Biosensor",Redirects
+/product-category/development-kit/,/shop/,url,301,url,"Cat: Dev Kit → Shop",Redirects
+/blog/sic-news/,/category/sic-news/,url,301,url,"Blog subcategory → Category",Redirects
+/blog/articles/,/category/articles/,url,301,url,"Blog subcategory → Category",Redirects
+/blog/white-papers/,/category/white-papers/,url,301,url,"Blog subcategory → Category",Redirects
+/blog/events/,/category/events/,url,301,url,"Blog subcategory → Category",Redirects
+/products/sic61au/,/products/immobilizer-transponder/,url,301,url,"Products path variant",Redirects

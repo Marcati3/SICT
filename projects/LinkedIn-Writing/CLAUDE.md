@@ -26,6 +26,24 @@ LinkedIn & Writing — LinkedIn comment drafting, company reposts, and professio
 
 - Servant leadership (core philosophy), Lean/BPO (PDCA, Shingijutsu), APAC leadership complexity, multicultural teams, geopolitics/trade, semiconductor/RFID industry, inclusion as performance driver
 
+## Output Folder Rules (MANDATORY)
+
+**NEVER save output files to the project root.** All outputs go into the appropriate subfolder:
+
+| Folder | What goes there |
+|---|---|
+| `Comments/` | LinkedIn comment drafts |
+| `Posts/` | Original LinkedIn posts |
+| `Reposts/` | Company repost drafts |
+| `Recommendations/` | Professional recommendations |
+| `Professional-Writing/` | Leadership summaries, emails, other professional content |
+
+**Within each folder, create a descriptive subfolder** for the workstream if needed (e.g., `Comments/2026-03/`).
+
+Every new output folder gets a `PROJECT-BRIEF.md`.
+
+**Never save outputs to Downloads, Desktop, or any location outside this project tree.**
+
 ## Working Style
 
 - Read `PROJECT-BRIEF.md` for full style profile before writing anything

@@ -29,6 +29,22 @@ Italy Travel — Trip planning, itineraries, and destination research for Italy 
 5. Confirm remaining winery appointments
 6. Finalize Verona→Venice transfer timing
 
+## Output Folder Rules (MANDATORY)
+
+**NEVER save output files to the project root.** All outputs go into the appropriate subfolder:
+
+| Folder | What goes there |
+|---|---|
+| `Itineraries/` | Day-by-day itineraries, route plans, schedule docs |
+| `Bookings/` | Hotel confirmations, winery appointments, restaurant reservations |
+| `Research/` | Destination research, restaurant lists, transport options |
+
+**Within each folder, create a descriptive subfolder** for the workstream if needed (e.g., `Bookings/Hotels/`, `Research/Wineries/`).
+
+Every new output folder gets a `PROJECT-BRIEF.md`.
+
+**Never save outputs to Downloads, Desktop, or any location outside this project tree.**
+
 ## Working Style
 
 - Read `PROJECT-BRIEF.md` for full context before acting

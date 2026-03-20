@@ -1,0 +1,34 @@
+# AI Crawler Directives for robots.txt
+# =====================================
+# WHERE: Add these BEFORE the Yoast block in /robots.txt
+# HOW: Edit via Yoast SEO > Tools > File editor, or directly on server
+# PURPOSE: Explicitly allow AI crawlers to index your content for AI search visibility
+#
+# STRATEGY: Allow all AI crawlers. SIC benefits from appearing in AI search results
+# (ChatGPT, Perplexity, Google AI Overviews). If you want to BLOCK any, change Allow to Disallow.
+
+# AI Search Crawlers - ALLOW for visibility
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Block known scraper bots (not search-related)
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /

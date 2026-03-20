@@ -29,6 +29,25 @@ Thai Holding Company: A personal project to establish a Thailand-based holding c
 4. Develop pricing model for each service line
 5. Prepare go-to-market materials for Western SME outreach
 
+## Output Folder Rules (MANDATORY)
+
+**NEVER save output files to the project root.** All outputs go into the appropriate subfolder:
+
+| Folder | What goes there |
+|---|---|
+| `Legal/` | MSA, addenda, KYC forms, compliance docs (Word/PDF) |
+| `Workbooks/` | Service models workbook, risk matrix, SOW linkage (Excel) |
+| `Compliance/` | Onboarding tracker, acceptance/rejection workflows, audit templates |
+| `Go-To-Market/` | Pitch decks, one-pagers, website copy, outreach materials |
+| `Governance/` | Board templates, minutes, delegation matrix, governance calendar |
+| `Pricing/` | Fee structures, pricing models, escrow schedules |
+
+**Within each folder, create a descriptive subfolder** for the workstream if needed (e.g., `Legal/MSA-v2/`, `Go-To-Market/Website/`).
+
+Every new output folder gets a `PROJECT-BRIEF.md`.
+
+**Never save outputs to Downloads, Desktop, or any location outside this project tree.**
+
 ## Working Style
 
 - Read `PROJECT-BRIEF.md` for full context before acting

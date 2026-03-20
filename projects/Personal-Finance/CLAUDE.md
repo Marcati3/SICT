@@ -32,6 +32,23 @@ Personal Finance — Investment portfolio management and financial strategy. Tha
 
 Semis (27%): NVDA, TSM, AMD, ASML | Energy (17%): CVX, RIO | Financials (19%) | Consumer/Tech (11%): SE, MELI, NVO | VTI (4%) | Cash (2%)
 
+## Output Folder Rules (MANDATORY)
+
+**NEVER save output files to the project root.** All outputs go into the appropriate subfolder:
+
+| Folder | What goes there |
+|---|---|
+| `Portfolio-Analysis/` | Portfolio snapshots, allocation analysis, sector breakdowns |
+| `Strategy/` | Deployment plans, rotation strategies, scenario analyses |
+| `Banking/` | Offshore banking research, funding path docs |
+| `Tax-Compliance/` | Tax planning, reporting obligations, withholding analysis |
+
+**Within each folder, create a descriptive subfolder** for the workstream if needed (e.g., `Portfolio-Analysis/2026-Q1/`).
+
+Every new output folder gets a `PROJECT-BRIEF.md`.
+
+**Never save outputs to Downloads, Desktop, or any location outside this project tree.**
+
 ## Working Style
 
 - Read `PROJECT-BRIEF.md` for full context before acting
