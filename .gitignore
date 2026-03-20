@@ -32,6 +32,12 @@ backups/
 plugins/
 *.log
 
+# Word temp/lock files
+~$*.docx
+
+# Cache
+cache/
+
 # Sensitive (add here if any secrets exist)
 # .env
 # credentials.json
